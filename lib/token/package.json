@@ -1,0 +1,10 @@
+{
+    "name": "oidc-token",
+    "version": "1.0.0",
+    "description": "Token OpenID-Connect implementation as a hapi plugin",
+    "main": "index.js",
+    "author": "Ali Ismael",
+    "license": "Apache-2.0",
+    "dependencies": {
+    }
+}
