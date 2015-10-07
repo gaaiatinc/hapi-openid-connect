@@ -16,12 +16,7 @@
     "engines": {
         "node": ">=0.10.30"
     },
-    "licenses": [
-        {
-            "type": "Apache License, Version 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0"
-        }
-    ],
+    "license": "Apache-2.0",
     "bugs": {
         "url": "https://github.com/gaaiatinc/hapi-openid-connect.git"
     },
