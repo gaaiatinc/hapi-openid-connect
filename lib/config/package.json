@@ -1,0 +1,10 @@
+{
+    "name": "oidc-configuration",
+    "version": "1.0.0",
+    "description": "Configuration OpenID-Connect implementation as a hapi plugin",
+    "main": "index.js",
+    "author": "Ali Ismael",
+    "license": "Apache-2.0",
+    "dependencies": {
+    }
+}
