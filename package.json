@@ -1,6 +1,6 @@
 {
   "name": "hapi-openid-connect",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "A Hapi plugin implementation of the core and discovery OpenID-Connect provider API",
   "main": "./lib/index.js",
   "scripts": {
