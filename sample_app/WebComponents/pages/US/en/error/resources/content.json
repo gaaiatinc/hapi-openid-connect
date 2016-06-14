@@ -1,0 +1,11 @@
+{
+    "page": {
+        "title": "Sampleapp - Login",
+        "keywords": "Sampleapp, new account, client, customer, SignUp",
+        "description": "SignUp for the best experience at your convenience"
+    },
+    "error": {
+        "code": "404",
+        "message": "Opps! it seems that this page does not exist."
+    }
+}

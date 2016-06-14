@@ -1,0 +1,12 @@
+{
+    "PORT": 8008,
+    "app": {
+        "database": {
+            "host_seed": "localhost:27017",
+            "login_id": "sa_db_user",
+            "login_password": "sa_user_pwd",
+            "connect_retry_millies": 5000,
+            "database": "sa_db"
+        }
+    }
+}

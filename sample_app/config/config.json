@@ -1,0 +1,125 @@
+{
+    "PORT": 8000,
+    "app_root": "/oidc",
+    "app_url_domain": "sampleapp.com",
+    "platform": {
+        "supported_locales": [
+            "en-US",
+            "en-GB",
+            "fr-FR",
+            "de-DE",
+            "es-ES",
+            "pt-PT",
+            "da-DK",
+            "nl-NL",
+            "sv-SE",
+            "zh-CN",
+            "hi-IN",
+            "it-IT",
+            "ja-JP"
+        ],
+        "auth": {
+            "session_cookie_password": "some strong session password",
+            "cookie_name": "sats",
+            "on_auth_failure_redirect_to": "signin",
+            "session_cookie_ttl": 15552000000,
+            "session_validation_plugin": null
+        },
+        "visitor_tracking": {
+            "vt_cookie_password": "some strong visitor tracking password"
+        },
+        "csrf": {
+            "csrf_header_password": "some strong CSRF password",
+            "csrf_header_name": "sa-decorator"
+        },
+        "locale_resolver": {},
+        "static_resources_path": "./public"
+    },
+    "router": {
+        "module": {
+            "name": "/lib/router",
+            "params": {}
+        }
+    },
+    "extensions": [],
+    "plugins": [{
+        "module_name": "hapi-openid-connect",
+        "module_options": {
+            "oidc_url_root": "/oidc",
+            "login_module": "/lib/login_module",
+            "client_registrar_module": "/lib/client_registrar_module",
+            "version": 1,
+            "configuration": {
+                "issuer": "https://www.sampleapp.com/oidc",
+                "scopes_supported": [
+                    "profile",
+                    "address",
+                    "email",
+                    "phone"
+                ],
+                "jwk": {
+                    "cert_type_rsa": true,
+                    "priv_key_file_name": "./config/oidc/sampleapp-key.pem",
+                    "pub_key_file_name": "./config/oidc/sampleapp-cert.pem",
+                    "cert_chain_file_name": "./config/oidc/sampleapp-cert-chain.pem"
+                }
+            }
+        }
+    }, {
+
+        "module_name": "hapi-swagger",
+        "module_options": {
+            "schemes": [
+                "https"
+            ],
+            "documentationPath": "/oidc/api/swagger-ui",
+            "swaggerUIPath": "/oidc/api/swaggerui/",
+            "jsonPath": "/oidc/api/swagger.json",
+            "basePath": "/",
+            "pathPrefixSize": 2,
+            "info": {
+                "title": "SampleApp REST API",
+                "version": "V1.0",
+                "description": "The REST API published by SampleApp for moble applications integration.",
+                "termsOfService": "https://www.sampleapp.com/terms-and-conditions",
+                "contact": {
+                    "email": "support@sampleapp.com"
+                },
+                "license": {
+                    "name": "SampleApp license - TBD",
+                    "url": "https://www.sampleapp.com/api-license"
+                }
+            }
+        }
+    }],
+    "app": {
+        "session": {
+            "session_duration": 3600
+        },
+        "third_party_oauth": {},
+        "aws": {
+            "awsConfig": {
+                "accessKeyId": "some aws loooooooooong access key",
+                "secretAccessKey": "some aws looooooooooong secret key",
+                "region": "us-west-2",
+                "sslEnabled": true,
+                "maxRetries": 10
+            },
+            "apiVersions": {
+                "sns": "2010-03-31",
+                "sts": "2011-06-15"
+            }
+        },
+        "database": {
+            "host_seed": "localhost:27017",
+            "login_id": "sa_db_user",
+            "login_password": "sa_user_pwd",
+            "connect_retry_millies": 5000,
+            "database": "sa_db"
+        },
+
+        "content": {
+            "root_dir": ""
+        }
+    }
+}

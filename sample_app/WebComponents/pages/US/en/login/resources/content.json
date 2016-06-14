@@ -1,0 +1,24 @@
+{
+    "page": {
+        "title": "Sampleapp - Login",
+        "keywords": "Sampleapp, shipping, delivery, new account, client, customer, SignUp",
+        "description": "SignUp for the best experience at your convenience"
+    },
+    "login": {
+        "title": "Login",
+        "subtitle": "Login to Sampleapp",
+
+        "form": {
+            "headline": "Please sign in",
+            "action": "",
+            "email": "Email address",
+            "password": "Password",
+            "account-type": [{
+                "value": "CUSTOMER",
+                "text": "Login as Customer"
+            }],
+            "remember-me": "Remember me",
+            "btn-submit": "Sign in"
+        }
+    }
+}

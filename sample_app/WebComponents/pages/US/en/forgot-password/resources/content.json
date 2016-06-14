@@ -1,0 +1,19 @@
+{
+    "page": {
+        "title": "Sampleapp - Securely sign in to your account",
+        "keywords": "Sampleapp, forgot-password, client, customer, forgot-password",
+        "description": "forgot password"
+    },
+    "forgot-password": {
+        "title": "Enter your email address and we'll send you a link to reset your password.",
+        "headline": "Sign in with your email address",
+        "form": {
+            "email": "Email address",
+            "login-link": "signin",
+            "login-text": "Log in to Sampleapp",
+            "submit-form": "Reset Password",
+
+            "submit-success": "We've sent you an email with a link to reset your password."
+        }
+    }
+}
