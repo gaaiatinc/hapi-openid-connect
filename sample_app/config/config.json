@@ -1,7 +1,8 @@
 {
-    "PORT": 8000,
-    "app_root": "/oidc",
+    "PORT": 8008,
+    "app_root": "/sample_app/oidc",
     "app_url_domain": "sampleapp.com",
+    "external_server_url": "https://localhost.sampleapp.com:8443",
     "platform": {
         "supported_locales": [
             "en-US",
@@ -19,17 +20,18 @@
             "ja-JP"
         ],
         "auth": {
-            "session_cookie_password": "some strong session password",
+            "session_cookie_password": "some strong session password  123456789012345678901234567890",
             "cookie_name": "sats",
-            "on_auth_failure_redirect_to": "signin",
+            "on_auth_failure_redirect_to": "/sample_app/oidc/signin",
+            "appendNext": "redirect_uri",
             "session_cookie_ttl": 15552000000,
             "session_validation_plugin": null
         },
         "visitor_tracking": {
-            "vt_cookie_password": "some strong visitor tracking password"
+            "vt_cookie_password": "some strong visitor tracking password 123456789012345678901234567890"
         },
         "csrf": {
-            "csrf_header_password": "some strong CSRF password",
+            "csrf_header_password": "some strong CSRF password 123456789012345678901234567890",
             "csrf_header_name": "sa-decorator"
         },
         "locale_resolver": {},
@@ -45,12 +47,15 @@
     "plugins": [{
         "module_name": "hapi-openid-connect",
         "module_options": {
-            "oidc_url_root": "/oidc",
-            "login_module": "/lib/login_module",
+            "oidc_url_root": "/sample_app/oidc",
+            "user_authentication_url": "https://localhost.sampleapp.com:8443/sample_app/oidc/signin",
+            "user_post_login_account_url": "https://localhost.sampleapp.com:8443/sample_app/oidc/account",
+            "authorization_request_store_module": "/lib/authorization_request_store_module",
             "client_registrar_module": "/lib/client_registrar_module",
+            "user_account_registrar_module": "/lib/user_account_registrar_module",
             "version": 1,
             "configuration": {
-                "issuer": "https://www.sampleapp.com/oidc",
+                "issuer": "https://localhost:8443/sample_app/oidc",
                 "scopes_supported": [
                     "profile",
                     "address",
@@ -66,17 +71,16 @@
             }
         }
     }, {
-
         "module_name": "hapi-swagger",
         "module_options": {
             "schemes": [
                 "https"
             ],
-            "documentationPath": "/oidc/api/swagger-ui",
-            "swaggerUIPath": "/oidc/api/swaggerui/",
-            "jsonPath": "/oidc/api/swagger.json",
-            "basePath": "/",
-            "pathPrefixSize": 2,
+            "documentationPath": "/sample_app/oidc/api/swagger-ui",
+            "swaggerUIPath": "/sample_app/oidc/api/swaggerui/",
+            "jsonPath": "/sample_app/oidc/api/swagger.json",
+            "basePath": "/sample_app/oidc",
+            "pathPrefixSize": 3,
             "info": {
                 "title": "SampleApp REST API",
                 "version": "V1.0",
@@ -97,23 +101,10 @@
             "session_duration": 3600
         },
         "third_party_oauth": {},
-        "aws": {
-            "awsConfig": {
-                "accessKeyId": "some aws loooooooooong access key",
-                "secretAccessKey": "some aws looooooooooong secret key",
-                "region": "us-west-2",
-                "sslEnabled": true,
-                "maxRetries": 10
-            },
-            "apiVersions": {
-                "sns": "2010-03-31",
-                "sts": "2011-06-15"
-            }
-        },
         "database": {
             "host_seed": "localhost:27017",
             "login_id": "sa_db_user",
-            "login_password": "sa_user_pwd",
+            "login_password": "sa_db_pwd",
             "connect_retry_millies": 5000,
             "database": "sa_db"
         },

@@ -1,0 +1,13 @@
+{
+    "page": {
+        "title": "client demo page",
+        "keywords": "OpenID Connect",
+        "description": "demo for client services"
+    },
+
+    "home": {},
+
+    "nav_bar": {
+        "current" : "home"
+    }
+}

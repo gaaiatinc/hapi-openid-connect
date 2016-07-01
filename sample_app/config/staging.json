@@ -4,9 +4,9 @@
         "database": {
             "host_seed": "localhost:27017",
             "login_id": "sa_db_user",
-            "login_password": "dev_user_pwd",
+            "login_password": "sa_db_pwd",
             "connect_retry_millies": 5000,
-            "database": "sa_db_dev"
+            "database": "sa_db"
         }
     }
 }

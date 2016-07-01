@@ -1,6 +1,6 @@
 {
-    "page_id": "login",
-    "template_id": "login.dust",
+    "page_id": "signin",
+    "template_id": "signin.jsx",
     "access_conditions": {
         "logged_in_only": false,
         "account_type": "ANY"

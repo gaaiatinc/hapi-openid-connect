@@ -4,6 +4,7 @@
 
 import React from "react";
 
+import headMetaTags from "./template_components/HeadMetaTags";
 //import {Head, Vendors, BodyClassName, Analytics} from "resources/jsx_components/helpers";
 
 /**
@@ -32,15 +33,15 @@ export default class RootTemplate extends React.Component {
     static getExternalAssetsDescriptor(model) {
         const assets = {
             javascript: [
-                "https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react.min.js", "https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.min.js"
+                "https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react.min.js", "https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.min.js", "https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap/0.29.4/react-bootstrap.min.js"
             ],
-            styles: []
+            styles: ["https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css", "https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css"]
         };
         return assets;
     }
 
     /**
-   * This method must return a subset of the modelData that is secure for
+   * This method must return a subset of the model that is secure for
    * sending to the browser.
    *
    * [filterModelData description]
@@ -55,7 +56,8 @@ export default class RootTemplate extends React.Component {
    *
    */
     static getHeaderTags(model) {
-        return [];
+
+        return headMetaTags(model);
     }
 
     /**

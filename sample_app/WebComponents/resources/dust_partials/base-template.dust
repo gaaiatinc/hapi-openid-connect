@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<!--[if IE 9 ]>
+    <html lang="en" class="no-js ie9"> <![endif]-->
+    <!--[if (gt IE 9)|!(IE)]><!-->
+    <html lang="en" class="no-js"> <!--<![endif]-->
+
+    <head>
+        <!-- METADATA -->
+        <!-- END METADATA -->
+    </head>
+
+{<pageIdLogic}
+{/pageIdLogic}
+
+<body class="{?metadata.page_id} page-{metadata.page_id}{/metadata.page_id}"{?metadata.page_id} data-page="{metadata.page_id}"{/metadata.page_id} data-template="blank">
+    {+headerContent/}
+    {+pageContent/}
+    {+footerContent/}
+
+    <script src="/res/js/utils.js"></script>
+    <script src="/res/angle/vendor/jquery-ui/jquery-ui.min.js"></script>
+
+    {! slot for base specific JS !}
+    {+jsFiles/}
+    {! slot for page specific JS !}
+    {+pageJS/}
+</body>
+
+</html>

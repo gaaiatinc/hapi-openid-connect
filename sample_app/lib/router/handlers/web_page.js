@@ -7,7 +7,7 @@
 let path = require("path"),
     dbMgr = require("valde-hapi").database,
     ObjectId = require("mongodb").ObjectID,
-    appConfig = require("valde-hapi").app_config.getConfig();
+    app_config = require("valde-hapi").app_config.get_config();
 
 function handler(request, reply) {
 
@@ -28,29 +28,19 @@ function handler(request, reply) {
                     request.__valde.web_model.account_type = request.auth.credentials.account_type;
                     request.__valde.web_model.account_data = accountData;
                 },
-                function (err) {})
-            .catch(function (err) {})
-            .finally(function () {
+                function(err) {})
+            .catch(function(err) {})
+            .finally(function() {
                 reply.view(request.__valde.web_model.pageViewTemplate, request.__valde.web_model);
             });
     } else {
-        //check if the model construction is redirecting to signin page:
-        let resolvedPageRe = /\/pages\/..\/..\/(.*)\/page/;
-        let matches = resolvedPageRe.exec(request.__valde.web_model.pageViewID);
-
-        if (matches && (matches.length > 0) && (matches[1] == "signin") && (matches[1] != request.params.pageID)) {
-            // the requested page requires signin:
-            return reply.redirect(appConfig.get("app_root") + "/signin?next=" +
-                encodeURIComponent(appConfig.get("app_root") + "/" + request.params.pageID));
-        } else {
-            reply.view(request.__valde.web_model.pageViewTemplate, request.__valde.web_model);
-        }
+        reply.view(request.__valde.web_model.pageViewTemplate, request.__valde.web_model);
     }
 }
 
 module.exports = {
     method: "GET",
-    path: appConfig.get("app_root") + "/{pageID*}",
+    path: app_config.get("app_root") + "/{pageID*}",
     config: {
         handler: handler,
         auth: {

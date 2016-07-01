@@ -6,7 +6,7 @@
     },
     "login": {
         "title": "Login",
-        "subtitle": "Login to Sampleapp",
+        "subtitle": "Login to Sample_app",
 
         "form": {
             "headline": "Please sign in",

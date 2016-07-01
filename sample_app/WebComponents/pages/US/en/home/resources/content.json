@@ -1,0 +1,13 @@
+{
+    "page": {
+        "title": "oidc-home",
+        "keywords": "OpenID Connect",
+        "description": "demo homepage"
+    },
+
+    "home": {},
+
+    "nav_bar": {
+        "current" : "home"
+    }
+}

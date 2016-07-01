@@ -1,10 +1,48 @@
 /**
- * Example client registrar module
+ * Example client registrar module required for the hapi-openid-connect plugin
+ *
+ * This module must export a function named get_client_registration() which
+ * returns a promise resolving with a client registration object from a
+ * persistence store. The get_client_registration() function takes the same
+ * client ID (OIDC client_id) used to identify the client in the authorization
+ * request.
+ *
+ * The client registration must include as a minium the host name, and port
+ * for the client redirect uri.
+ *
  */
 "use strict";
 
-function getClientRegistration(clientId) {
-    return {};
+let Q = require("q");
+
+/**
+ * This method must retrun a Promise which resolves to the client registration
+ * entry from a persistent store.  The client registration entry must have attributes
+ * identical to the ones in this demo implementation (redirect_uri_hostname,
+ * redirect_uri_port, redirect_uri_path, and description).
+ *
+ * This is a demo implementaiton of the function implementing client registry
+ * lookup.  It has a hard-coded entry for the sample app running on:
+ *     https://localhost:8443
+ * with client_id: 123456
+ *
+ * @param  {[type]} clientId
+ * @return {[type]}
+ */
+function get_client_registration(clientId) {
+
+    return Q.Promise((resolve, reject) => {
+        if (clientId === "123456") {
+            return resolve({
+                redirect_uri_hostname: "localhost.sampleapp.com",
+                redirect_uri_port: "8443",
+                redirect_uri_path: "/sample_app/client_services",
+                description: "sample app"
+            });
+        } else {
+            return reject(new Error("client ID not registered!"));
+        }
+    });
 }
 
 /**
@@ -12,5 +50,5 @@ function getClientRegistration(clientId) {
  * @type {Object}
  */
 module.exports = {
-    getClientRegistration
+    get_client_registration
 };

@@ -5,11 +5,11 @@
 "use strict";
 
 let path = require ("path");
-let appConfig = require("valde-hapi").app_config.getConfig();
+let app_config = require("valde-hapi").app_config.get_config();
 
 module.exports = {
     method: "GET",
-    path: appConfig.get("app_root") + "/res/{resID*}",
+    path: app_config.get("app_root") + "/res/{resID*}",
     handler: {
         directory: {
             path: "public",
