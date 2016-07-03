@@ -47,12 +47,7 @@
     "plugins": [{
         "module_name": "hapi-openid-connect",
         "module_options": {
-            "oidc_url_root": "/sample_app/oidc",
-            "user_authentication_url": "https://localhost.sampleapp.com:8443/sample_app/oidc/signin",
-            "user_post_login_account_url": "https://localhost.sampleapp.com:8443/sample_app/oidc/account",
-            "authorization_request_store_module": "/lib/authorization_request_store_module",
-            "client_registrar_module": "/lib/client_registrar_module",
-            "user_account_registrar_module": "/lib/user_account_registrar_module",
+            "oidc_url_path": "/sample_app/oidc",
             "version": 1,
             "configuration": {
                 "issuer": "https://localhost:8443/sample_app/oidc",
@@ -67,6 +62,26 @@
                     "priv_key_file_name": "./config/oidc/sampleapp-key.pem",
                     "pub_key_file_name": "./config/oidc/sampleapp-cert.pem",
                     "cert_chain_file_name": "./config/oidc/sampleapp-cert-chain.pem"
+                },
+                "authorization_endpoint": {
+                    "authorization_request_registrar_module": "/lib/authorization_request_registrar_module"
+                },
+                "token_endpoint": {
+                    "token_registrar_module": "/lib/token_registrar_module",
+                    "authorization_code_grant_type": {
+                        "token_duration_seconds": 600
+                    },
+                    "password_grant_type": {
+                        "token_duration_seconds": 900
+                    }
+                },
+                "user_info_endpoint": {
+                    "user_authentication_url": "https://localhost.sampleapp.com:8443/sample_app/oidc/signin",
+                    "user_post_login_account_url": "https://localhost.sampleapp.com:8443/sample_app/oidc/account",
+                    "user_account_registrar_module": "/lib/user_account_registrar_module"
+                },
+                "client_endpoint": {
+                    "client_registrar_module": "/lib/client_registrar_module"
                 }
             }
         }

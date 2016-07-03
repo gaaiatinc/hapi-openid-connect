@@ -8,21 +8,23 @@ let crypto = require("crypto");
 let moment = require("moment");
 
 /**
- * This is a demo implementaion of the get_user_profile_for_signin() function
+ * This is a demo implementaion of the get_user_account_for_signin() function
  * that is required for the hapi-openid-connect plugin.  The implementaion must
  * perform the following:
+ *
  *
  * 1- verify that the user_id (email) and password match a user account record
  * 2- if the user account is found, set the session cookie for the request if
  *     not already set.
  * 3- return a Promise that must resolve with the user profile
  *
+ * The user profile must have a unique attirbute named _id, that has a toString()
+ *    method, and it must be less than 255 characters (as per OpenID specs).
  *
- * @param  {[type]} user_id      [description]
- * @param  {[type]} access_token [description]
+ * @param  {[type]} request      [description]
  * @return {[type]}              [description]
  */
-function get_user_profile_for_signin(request) {
+function get_user_account_for_signin(request) {
 
     if (!request.auth.isAuthenticated) {
         var shasum = crypto.createHash("sha1");
@@ -41,6 +43,7 @@ function get_user_profile_for_signin(request) {
     }
 
     return Q({
+        _id: "1235asddgf34545",
         user_id: "tester@sampleapp.com",
         user_password: "pwd",
         region: "en-US"
@@ -48,11 +51,71 @@ function get_user_profile_for_signin(request) {
 }
 
 /**
+ * This function must return a promise which resolves with the given user_account
+ * persisted in the store.
+ *
+ * @param  {[type]} user_account [description]
+ * @return {[type]}              [description]
+ */
+function post_user_account(user_account) {
+    return Q({
+        status: "successful",
+        status_code: 200
+    });
+}
+
+/**
+ * This function must return a Promise which resolves upon successful update of
+ * matching user_account in the persistent store.
+ *
+ * @param  {[type]} user_account [description]
+ * @return {[type]}              [description]
+ */
+function put_user_account(user_account) {
+    return Q({
+        status: "successful",
+        status_code: 200
+    });
+}
+
+/**
+ * This function must return a Promise which resolves with the user_account
+ * identifed by the given user_id.
  *
  * @param  {[type]} user_id [description]
+ * @return {[type]}                 [description]
+ */
+function get_user_account(user_id) {
+    return Q({
+        _id: "1235asddgf34545",
+        user_id: "tester@sampleapp.com",
+        user_password: "pwd",
+        region: "en-US"
+    });
+}
+
+/**
+ * This function must return a Prmoise which resolves upon successful delteion
+ * of the user_account in the persistent store (identifed by the given user_id)
+ *
+ * @param  {[type]} user_id [description]
+ * @return {[type]}                 [description]
+ */
+function delete_user_account(user_id) {
+    return Q({
+        status: "successful",
+        status_code: 200
+    });
+}
+
+/**
+ * This is a demo omplementation which does not implement all the typical
+ * tasks involved in marking a user profile on a device as signed out.
+ *
+ * @param  {[type]} request [description]
  * @return {[type]}         [description]
  */
-function update_user_profile_for_signout(request) {
+function update_user_account_for_signout(user_id) {
     return Q({
         status: "successful",
         status_code: 200
@@ -65,7 +128,7 @@ function update_user_profile_for_signout(request) {
  * @param  {[type]} reply   [description]
  * @return {[type]}         [description]
  */
-function change_password(request) {
+function change_password(request, reply) {
     return Q({
         status: "successful",
         status_code: 501
@@ -76,8 +139,9 @@ function change_password(request) {
  *
  * @param {[type]} request [description]
  * @param {[type]} reply   [description]
+ * @return {[type]}         [description]
  */
-function request_password_reset(request) {
+function request_password_reset(request, reply) {
     return Q({
         status: "successful",
         status_code: 501
@@ -88,8 +152,9 @@ function request_password_reset(request) {
  *
  * @param {[type]} request [description]
  * @param {[type]} reply   [description]
+ * @return {[type]}         [description]
  */
-function perform_password_reset(request) {
+function perform_password_reset(request, reply) {
     return Q({
         status: "successful",
         status_code: 501
@@ -103,7 +168,7 @@ function perform_password_reset(request) {
  * @param  {[type]} reply   [description]
  * @return {[type]}         [description]
  */
-function activate(request) {
+function activate(request, reply) {
     return Q({
         status: "successful",
         status_code: 501
@@ -117,7 +182,7 @@ function activate(request) {
  * @param  {[type]} reply   [description]
  * @return {[type]}         [description]
  */
-function resend_activation_code(request) {
+function resend_activation_code(request, reply) {
     return Q({
         status: "successful",
         status_code: 501
@@ -131,7 +196,7 @@ function resend_activation_code(request) {
  * @param  {[type]} reply   [description]
  * @return {[type]}         [description]
  */
-function remove_account(request) {
+function remove_account(request, reply) {
     return Q({
         status: "successful",
         status_code: 501
@@ -145,7 +210,7 @@ function remove_account(request) {
  * @param  {[type]} reply   [description]
  * @return {[type]}         [description]
  */
-function signup(request) {
+function signup(request, reply) {
     return Q({
         status: "successful",
         status_code: 501
@@ -158,8 +223,12 @@ function signup(request) {
  * @type {Object}
  */
 module.exports = {
-    get_user_profile_for_signin,
-    update_user_profile_for_signout,
+    get_user_account_for_signin,
+    update_user_account_for_signout,
+    post_user_account,
+    put_user_account,
+    get_user_account,
+    delete_user_account,
     change_password,
     request_password_reset,
     perform_password_reset,

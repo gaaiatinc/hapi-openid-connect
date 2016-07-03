@@ -5,17 +5,25 @@
  * hapi-openid-connect plugin to store and retrieve authorization requests in
  * between redirections and consumption.
  *
- * The hapi-openid-connect plugin require this module to export two functions,
+ * The hapi-openid-connect plugin require this module to export four functions,
  *   which must return promises:
  *
- * 1- put_authorization_request( authorization_request) which must persist the
- *   authorization_request object, and return an id for it.
+ * 1- put_authorization_request( authorization_request) which must update the
+ *   authorization_request object in the psersistence store.
  *
  * 2- get_authorization_request(authorization_request_id) which must retrieve the
  *   authorization_request associated with the authorization_request_id argument
  *   from the persistence sotre.
  *
- * This example uses mongoDB for the underlying persistence
+ * 3- post_authorization_request( authorization_request) which must persist the
+ *   authorization_request object, and return an id for it.
+ *
+ * 4- delete_authorization_request( authorization_request_id) which must
+ *    delete the authorization request from the persistence store
+ *
+ * This demo example uses mongoDB for the underlying persistence and relies on
+ * mongodb "expire_after" indexes to automatically remove the expired
+ * authorization_requests from the database.
  */
 
 "use strict";
@@ -36,13 +44,11 @@ function post_authorization_request(authorization_request) {
     return Q.Promise((resolve, reject) => {
         dbMgr.updateOne(
                 "authorization_request", {
-                    original_authorization_request: {
+                    client_id: {
                         $eq: null
                     }
                 }, {
-                    $set: {
-                        original_authorization_request: authorization_request
-                    }
+                    $set: authorization_request
                 }, {
                     upsert: true
                 })
@@ -66,11 +72,8 @@ function post_authorization_request(authorization_request) {
  */
 function put_authorization_request(authorization_request) {
 
-    let update_spec = {
-        original_authorization_request: authorization_request.original_authorization_request
-    };
-    if (authorization_request.original_authorization_request.granted) {
-        update_spec.expire_on = new Date();
+    if (authorization_request.granted) {
+        authorization_request.expire_on = new Date();
     }
     return Q.Promise((resolve, reject) => {
         dbMgr.updateOne(
@@ -79,7 +82,7 @@ function put_authorization_request(authorization_request) {
                         $eq: authorization_request._id
                     }
                 }, {
-                    $set: update_spec
+                    $set: authorization_request
                 }, {
                     upsert: true
                 })
@@ -104,16 +107,27 @@ function put_authorization_request(authorization_request) {
  * authorization_request was granted, and reject the promise if the persisted
  * and/or granted authorizeRequest is older than some configurable duration.
  *
- * @param  authorization_request_id
+ * @param  authorization_request_id: the authorization_code is used as the id
+ *     in this implementation.
  * @return {[object]}
  */
 function get_authorization_request(authorization_request_id) {
-    return dbMgr.find("authorization_request", {
-        _id: {
-            $eq: authorization_request_id
-        }
-    }, {
-        limit: 1
+    return Q.Promise((resolve, reject) => {
+        dbMgr.find(
+                "authorization_request", {
+                    _id: {
+                        $eq: authorization_request_id
+                    }
+                }, {
+                    limit: 1
+                })
+            .then((authorize_requests) => {
+                if (authorize_requests.length > 0) {
+                    return resolve(authorize_requests[0]);
+                } else {
+                    return reject(new Error("No authorization request records found!"));
+                }
+            }, reject);
     });
 }
 
