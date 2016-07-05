@@ -26,18 +26,24 @@ let Q = require("q");
  *     https://localhost:8443
  * with client_id: 123456
  *
- * @param  {[type]} clientId
+ * For demo purposes, the http basic auth header is:
+ *    authorization: Basic MTIzNDU2OmNsaWVudF9wd2Q=
+ *    
+ * @param  {[type]} client_id
  * @return {[type]}
  */
-function get_client_registration(clientId) {
+function get_client_registration(client_id) {
 
     return Q.Promise((resolve, reject) => {
-        if (clientId === "123456") {
+        if (client_id === "123456") {
             return resolve({
                 redirect_uri_hostname: "localhost.sampleapp.com",
                 redirect_uri_port: "8443",
                 redirect_uri_path: "/sample_app/client_services",
-                description: "sample app"
+                description: "sample app",
+                client_id: client_id,
+                client_password: "client_pwd"
+
             });
         } else {
             return reject(new Error("client ID not registered!"));
