@@ -76,7 +76,7 @@ export default class AppMainPage extends RootTemplate {
                                 Email
                             </Col>
                             <Col sm={8} xs={12}>
-                                <FormControl type="email" name="user_id" placeholder="Email"/>
+                                <FormControl type="email" name="username" placeholder="Email"/>
                             </Col>
                         </FormGroup>
 
@@ -85,7 +85,7 @@ export default class AppMainPage extends RootTemplate {
                                 Password
                             </Col>
                             <Col sm={8} xs={12}>
-                                <FormControl type="password" name="user_password" placeholder="Password"/>
+                                <FormControl type="password" name="password" placeholder="Password"/>
                             </Col>
                         </FormGroup>
 

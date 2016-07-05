@@ -137,14 +137,14 @@ Most of the attributes in the json configuration object are self-explanatory, an
 
 - _get_user_account_for_signin(request)_:
 
-  - verify that the user_id (email) and password match a user account record
+  - verify that the username (email) and password match a user account record
   - if the user account is found, set the _hapi-auth-cookie_ session cookie for the request if not already set.
   - return a Promise that must resolve with the user account
   - reject the Promise if the user account does not exist.
 
   The user account must have a unique attribute named **__id_**, that has a toString() method, and it must be less than 255 characters (as per the OpenID specs).
 
-- _update_user_account_for_signout(user_id)_:
+- _update_user_account_for_signout(username)_:
 
   - mark the respective user account as necessary for signed out.
 

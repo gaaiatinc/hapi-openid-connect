@@ -13,7 +13,7 @@ let moment = require("moment");
  * perform the following:
  *
  *
- * 1- verify that the user_id (email) and password match a user account record
+ * 1- verify that the username (email) and password match a user account record
  * 2- if the user account is found, set the session cookie for the request if
  *     not already set.
  * 3- return a Promise that must resolve with the user profile
@@ -28,7 +28,7 @@ function get_user_account_for_signin(request) {
 
     if (!request.auth.isAuthenticated) {
         var shasum = crypto.createHash("sha1");
-        shasum.update(String(request.payload.user_id));
+        shasum.update(String(request.payload.username));
         shasum.update(String(request.headers["accept-language"]));
         shasum.update(String(request.headers["user-agent"]));
         var device_fingerprint = "29af01" + shasum.digest("hex").substr(5);
@@ -36,7 +36,7 @@ function get_user_account_for_signin(request) {
         var expire_on = moment().add(6, "months");
         var session = {
             device_fingerprint: device_fingerprint,
-            user_id: request.payload.user_id,
+            username: request.payload.username,
             expire_on: expire_on.format()
         };
         request.cookieAuth.set(session);
@@ -44,8 +44,8 @@ function get_user_account_for_signin(request) {
 
     /**
      * for the demo sample_app, this module has one hard-coded end_user account,
-     * with  user_id: "tester@sampleapp.com", and
-     *       user_password: "pwd"
+     * with  username: "tester@sampleapp.com", and
+     *       password: "pwd"
      *
      * These credentials map to the following basic authorization header:
      *    authorization: BASIC dGVzdGVyQHNhbXBsZWFwcC5jb206cHdk
@@ -53,8 +53,8 @@ function get_user_account_for_signin(request) {
      */
     return Q({
         _id: "1235asddgf34545",
-        user_id: "tester@sampleapp.com",
-        user_password: "pwd",
+        username: "tester@sampleapp.com",
+        password: "pwd",
         region: "en-US"
     });
 }
@@ -89,28 +89,28 @@ function put_user_account(user_account) {
 
 /**
  * This function must return a Promise which resolves with the user_account
- * identifed by the given user_id.
+ * identifed by the given username.
  *
- * @param  {[type]} user_id [description]
+ * @param  {[type]} username [description]
  * @return {[type]}                 [description]
  */
-function get_user_account(user_id) {
+function get_user_account(username) {
     return Q({
         _id: "1235asddgf34545",
-        user_id: "tester@sampleapp.com",
-        user_password: "pwd",
+        username: "tester@sampleapp.com",
+        password: "pwd",
         region: "en-US"
     });
 }
 
 /**
  * This function must return a Prmoise which resolves upon successful delteion
- * of the user_account in the persistent store (identifed by the given user_id)
+ * of the user_account in the persistent store (identifed by the given username)
  *
- * @param  {[type]} user_id [description]
+ * @param  {[type]} username [description]
  * @return {[type]}                 [description]
  */
-function delete_user_account(user_id) {
+function delete_user_account(username) {
     return Q({
         status: "successful",
         status_code: 200
@@ -124,7 +124,7 @@ function delete_user_account(user_id) {
  * @param  {[type]} request [description]
  * @return {[type]}         [description]
  */
-function update_user_account_for_signout(user_id) {
+function update_user_account_for_signout(username) {
     return Q({
         status: "successful",
         status_code: 200
