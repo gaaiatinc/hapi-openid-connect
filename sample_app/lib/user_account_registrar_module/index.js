@@ -42,6 +42,15 @@ function get_user_account_for_signin(request) {
         request.cookieAuth.set(session);
     }
 
+    /**
+     * for the demo sample_app, this module has one hard-coded end_user account,
+     * with  user_id: "tester@sampleapp.com", and
+     *       user_password: "pwd"
+     *
+     * These credentials map to the following basic authorization header:
+     *    authorization: BASIC dGVzdGVyQHNhbXBsZWFwcC5jb206cHdk
+     *
+     */
     return Q({
         _id: "1235asddgf34545",
         user_id: "tester@sampleapp.com",
