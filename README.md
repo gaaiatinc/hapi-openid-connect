@@ -2,6 +2,8 @@
 
 This module is a [Hapi](http://hapijs.com/) plugin implementation of the core and discovery OpenID-Connect / OAuth 2.0 provider API.
 
+***Please Note That This Plugin Is An Implementation Of The More Recent (Newer) Version Of OpenID: _OpenId Connect_, And It Does Not Support The Older OpenID 2.0***. All OpenID 2.0-specific features, such as _realm_, are not supported.  Furthermore, there is no plan for this plugin to support migration from the older OpenID 2.0 to the newer OpenID Connect.
+
 This release (1.2.1) is compliant with the OpenID Connect / OAuth 2.0 [documentation](http://openid.net/connect/), and offers the following endpoint implementation:
 
 1- _authorization endpoint_:

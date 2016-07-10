@@ -28,7 +28,7 @@ let Q = require("q");
  *
  * For demo purposes, the http basic auth header is:
  *    authorization: Basic MTIzNDU2OmNsaWVudF9wd2Q=
- *    
+ *
  * @param  {[type]} client_id
  * @return {[type]}
  */
@@ -42,7 +42,8 @@ function get_client_registration(client_id) {
                 redirect_uri_path: "/sample_app/client_services",
                 description: "sample app",
                 client_id: client_id,
-                client_password: "client_pwd"
+                username: "test_client@clientcorp.com",
+                password: "client_pwd"
 
             });
         } else {
