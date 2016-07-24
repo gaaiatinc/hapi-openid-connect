@@ -2,7 +2,7 @@
 
 This module is a [Hapi](http://hapijs.com/) plugin implementation of the core and discovery OpenID-Connect / OAuth 2.0 provider API.
 
-***Please Note That This Plugin Is An Implementation Of The More Recent (Newer) Version Of OpenID: _OpenId Connect_, And It Does Not Support The Older OpenID 2.0***. All OpenID 2.0-specific features, such as _realm_, are not supported.  Furthermore, there is no plan for this plugin to support migration from the older OpenID 2.0 to the newer OpenID Connect.
+**_Please Note That This Plugin Is An Implementation Of The More Recent (Newer) Version Of OpenID: _OpenId Connect_, And It Does Not Support The Older OpenID 2.0_**. All OpenID 2.0-specific features, such as _realm_, are not supported. Furthermore, there is no plan for this plugin to support migration from the older OpenID 2.0 to the newer OpenID Connect.
 
 This release (1.2.1) is compliant with the OpenID Connect / OAuth 2.0 [documentation](http://openid.net/connect/), and offers the following endpoint implementation:
 
@@ -122,7 +122,7 @@ Most of the attributes in the json configuration object are self-explanatory, an
 
 - token_registrar_module: This attribute is a path to a _commonjs_ module which will be "required" by the hapi-openid-connect code. The hapi-openid-connect plugin require this module to export the following functions, **_which must return promises_**:
 
-  1- put_token(oidc_token) which must update the oidc_token object in the psersistence store.
+  1- _put_token(oidc_token)_ which must update the oidc_token object in the psersistence store.
 
   2- _get_token(oidc_token_id)_ which must retrieve the oidc_token associated with the oidc_token_id argument from the persistence store. The oidc_token_id is also used as the access_token.
 
@@ -137,18 +137,23 @@ Most of the attributes in the json configuration object are self-explanatory, an
 
 - _user_account_registrar_module_: This attribute is a path to a _commonjs_ module which will be "required" by the hapi-openid-connect code. The hapi-openid-connect plugin require this module to export the following functions, **_which must return promises_**:
 
-- _get_user_account_for_signin(request)_:
+  - _get_user_account_for_signin(request)_:
 
-  - verify that the username (email) and password match a user account record
-  - if the user account is found, set the _hapi-auth-cookie_ session cookie for the request if not already set.
-  - return a Promise that must resolve with the user account
-  - reject the Promise if the user account does not exist.
+    - verify that the username (email) and password match a user account record
+    - if the user account is found, set the _hapi-auth-cookie_ session cookie for the request if not already set.
+    - return a Promise that must resolve with the user account
+    - reject the Promise if the user account does not exist.
 
-  The user account must have a unique attribute named **__id_**, that has a toString() method, and it must be less than 255 characters (as per the OpenID specs).
+    The user account must have a unique attribute named **__id_**, that has a toString() method, and it must be less than 255 characters (as per the OpenID specs).
 
-- _update_user_account_for_signout(username)_:
+  - _update_user_account_for_signout(username)_:
 
-  - mark the respective user account as necessary for signed out.
+    - mark the respective user account as necessary for signed out.
+
+
+  - _encrypt_password(real_password)_:
+
+    - calculate the encrypted equivalent of the _real_password_, so that it can be compared with the encrypted password stored in the user account persistent store.
 
 #### client_endpoint
 
@@ -160,3 +165,7 @@ Most of the attributes in the json configuration object are self-explanatory, an
     - redirect_uri_port
     - redirect_uri_path, and
     - description, which describes the permissions the client is requesting.
+
+  - _encrypt_password(real_password)_:
+
+      - calculate the encrypted equivalent of the _real_password_, so that it can be compared with the encrypted password stored in the user account persistent store.

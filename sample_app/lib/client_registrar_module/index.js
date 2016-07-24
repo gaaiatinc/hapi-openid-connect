@@ -14,6 +14,7 @@
 "use strict";
 
 let Q = require("q");
+let auth_util = require("../auth/util");
 
 /**
  * This method must retrun a Promise which resolves to the client registration
@@ -57,5 +58,6 @@ function get_client_registration(client_id) {
  * @type {Object}
  */
 module.exports = {
-    get_client_registration
+    get_client_registration,
+    encrypt_password: auth_util.encrypt_password
 };

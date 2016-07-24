@@ -6,6 +6,7 @@
 let Q = require("q");
 let crypto = require("crypto");
 let moment = require("moment");
+let auth_util = require("../auth/util");
 
 /**
  * This is a demo implementaion of the get_user_account_for_signin() function
@@ -54,7 +55,7 @@ function get_user_account_for_signin(request) {
     return Q({
         _id: "1235asddgf34545",
         username: "tester@sampleapp.com",
-        password: "pwd",
+        password: "dfxTK8Gf8LbreZtBDeRrElMAQz9pzinouAp2pr2g8uE=",
         region: "en-US"
     });
 }
@@ -98,7 +99,7 @@ function get_user_account(username) {
     return Q({
         _id: "1235asddgf34545",
         username: "tester@sampleapp.com",
-        password: "pwd",
+        password: "dfxTK8Gf8LbreZtBDeRrElMAQz9pzinouAp2pr2g8uE=",
         region: "en-US"
     });
 }
@@ -234,6 +235,7 @@ function signup(request, reply) {
 module.exports = {
     get_user_account_for_signin,
     update_user_account_for_signout,
+    encrypt_password: auth_util.encrypt_password,
     post_user_account,
     put_user_account,
     get_user_account,

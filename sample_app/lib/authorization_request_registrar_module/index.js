@@ -30,7 +30,7 @@
 
 let Q = require("q");
 
-let dbMgr = require("valde-hapi").database;
+let db_mgr = require("valde-hapi").database;
 
 /**
  * This function must return a promise, which persists the authorization_request
@@ -42,7 +42,7 @@ let dbMgr = require("valde-hapi").database;
  */
 function post_authorization_request(authorization_request) {
     return Q.Promise((resolve, reject) => {
-        dbMgr.updateOne(
+        db_mgr.updateOne(
                 "authorization_request", {
                     client_id: {
                         $eq: null
@@ -76,7 +76,7 @@ function put_authorization_request(authorization_request) {
         authorization_request.expire_on = new Date();
     }
     return Q.Promise((resolve, reject) => {
-        dbMgr.updateOne(
+        db_mgr.updateOne(
                 "authorization_request", {
                     _id: {
                         $eq: authorization_request._id
@@ -113,7 +113,7 @@ function put_authorization_request(authorization_request) {
  */
 function get_authorization_request(authorization_request_id) {
     return Q.Promise((resolve, reject) => {
-        dbMgr.find(
+        db_mgr.find(
                 "authorization_request", {
                     _id: {
                         $eq: authorization_request_id
@@ -139,7 +139,7 @@ function get_authorization_request(authorization_request_id) {
  * @return {[type]}                        [description]
  */
 function delete_authorization_request(authorization_request_id) {
-    return dbMgr.deleteOne("authorization_request", {
+    return db_mgr.deleteOne("authorization_request", {
         _id: authorization_request_id
     }, {});
 }

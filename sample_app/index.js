@@ -1,17 +1,21 @@
 /**
- * Created by Ali on 11/10/2015.
+ * Created by Ali on 3/10/2015.
  */
 "use strict";
 
 let platform = require("valde-hapi");
-let app_config = platform.app_config.get_config();
+let path = require("path");
 
-let loggerFactory = platform.app_logger;
+platform.init(path.dirname(require.main.filename));
 
-let logger = loggerFactory.getLogger("SampleApp", (app_config.get("env:production")) ? "WARN" : "DEBUG");
+platform.launch((err, server) => {
+    let app_config = platform.app_config;
 
-platform.init(function (err, server) {
-    server.start(function () {
+    let loggerFactory = platform.app_logger;
+
+    let logger = loggerFactory.getLogger("SampleApp", (app_config.get("env:production")) ? "WARN" : "DEBUG");
+
+    server.start(() => {
         logger.info("Server running at:", server.info.uri);
     });
 });

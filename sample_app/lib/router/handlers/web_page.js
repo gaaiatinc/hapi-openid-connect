@@ -7,7 +7,7 @@
 let path = require("path"),
     dbMgr = require("valde-hapi").database,
     ObjectId = require("mongodb").ObjectID,
-    app_config = require("valde-hapi").app_config.get_config();
+    app_config = require("valde-hapi").app_config;
 
 function handler(request, reply) {
 

@@ -20,12 +20,17 @@
             "ja-JP"
         ],
         "auth": {
-            "session_cookie_password": "some strong session password  123456789012345678901234567890",
-            "cookie_name": "sats",
-            "on_auth_failure_redirect_to": "/sample_app/oidc/signin",
-            "appendNext": "redirect_uri",
-            "session_cookie_ttl": 15552000000,
-            "session_validation_plugin": null
+            "cookie": {
+                "session_cookie_password": "some strong session password  123456789012345678901234567890",
+                "cookie_name": "sats",
+                "on_auth_failure_redirect_to": "/sample_app/signin",
+                "session_cookie_ttl": 15552000000,
+                "session_cookie_validation_module": "/lib/auth/cookie_validator"
+            },
+            "basic": {
+                "basic_auth_validation_module": "/lib/auth/basic_validator",
+                "unauthorized_response_attributes": ""
+            }
         },
         "visitor_tracking": {
             "vt_cookie_password": "some strong visitor tracking password 123456789012345678901234567890"
@@ -111,6 +116,12 @@
             }
         }
     }],
+    "vault_keeper": {
+        "keeper_url": "https://localhost:443/vault_keeper",
+        "handshake": "some strong handshake key  123456789012345678901234567890",
+        "access_key": "some strong access key  123456789012345678901234567890",
+        "hmac_key": "some hmac string 123456789012345678901234567890"
+    },
     "app": {
         "session": {
             "session_duration": 3600
@@ -123,7 +134,12 @@
             "connect_retry_millies": 5000,
             "database": "sa_db"
         },
-
+        "db_collections": {
+            "authorization_request": "authorization_request",
+            "client_registrar": "client_registrar",
+            "oidc_token": "oidc_token",
+            "user_account": "user_account"
+        },
         "content": {
             "root_dir": ""
         }
