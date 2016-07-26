@@ -35,3 +35,5 @@ test/single
 .settings
 .DS_Store
 temp
+
+sample_app

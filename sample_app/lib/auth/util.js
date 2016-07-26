@@ -25,8 +25,6 @@ function encrypt_password(password) {
 
     encrypted_password = hmac.digest("base64");
 
-    console.log("\n\n encrypted_password for: ", password, " is:", encrypted_password);
-
     return encrypted_password;
 }
 

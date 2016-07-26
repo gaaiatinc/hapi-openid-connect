@@ -32,7 +32,6 @@ module.exports = function(request, username, password, callback) {
         "username": username,
         "password": password
     };
-console.log("\n\n>>>>>> basic auth:", request_credentials);
 
     db_mgr.find(
             "user_account", request_credentials, {

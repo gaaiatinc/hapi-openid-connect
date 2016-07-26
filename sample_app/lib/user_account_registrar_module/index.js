@@ -7,6 +7,8 @@ let Q = require("q");
 let crypto = require("crypto");
 let moment = require("moment");
 let auth_util = require("../auth/util");
+let db_mgr = require("valde-hapi").database;
+let app_config = require("valde-hapi").app_config;
 
 /**
  * This is a demo implementaion of the get_user_account_for_signin() function
@@ -27,36 +29,38 @@ let auth_util = require("../auth/util");
  */
 function get_user_account_for_signin(request) {
 
-    if (!request.auth.isAuthenticated) {
-        var shasum = crypto.createHash("sha1");
-        shasum.update(String(request.payload.username));
-        shasum.update(String(request.headers["accept-language"]));
-        shasum.update(String(request.headers["user-agent"]));
-        var device_fingerprint = "29af01" + shasum.digest("hex").substr(5);
+    return Q.Promise((resolve, reject) => {
 
-        var expire_on = moment().add(6, "months");
-        var session = {
-            device_fingerprint: device_fingerprint,
-            username: request.payload.username,
-            expire_on: expire_on.format()
-        };
-        request.cookieAuth.set(session);
-    }
+        db_mgr.find(
+                app_config.get("app:db_collections:user_account"), {
+                    "username": request.payload.username,
+                    "password": auth_util.encrypt_password(request.payload.password)
+                }, {
+                    "limit": 1
+                })
+            .then(
+                (accounts) => {
+                    if (accounts.length > 0) {
+                        var shasum = crypto.createHash("sha1");
+                        shasum.update(String(request.payload.username));
+                        shasum.update(String(request.headers["accept-language"]));
+                        shasum.update(String(request.headers["user-agent"]));
+                        var device_fingerprint = "29af01" + shasum.digest("hex").substr(5);
 
-    /**
-     * for the demo sample_app, this module has one hard-coded end_user account,
-     * with  username: "tester@sampleapp.com", and
-     *       password: "pwd"
-     *
-     * These credentials map to the following basic authorization header:
-     *    authorization: BASIC dGVzdGVyQHNhbXBsZWFwcC5jb206cHdk
-     *
-     */
-    return Q({
-        _id: "1235asddgf34545",
-        username: "tester@sampleapp.com",
-        password: "dfxTK8Gf8LbreZtBDeRrElMAQz9pzinouAp2pr2g8uE=",
-        region: "en-US"
+                        var expire_on = moment().add(6, "months");
+                        var session = {
+                            device_fingerprint: device_fingerprint,
+                            username: request.payload.username,
+                            expire_on: expire_on.format()
+                        };
+                        request.cookieAuth.set(session);
+
+                        return resolve(accounts[0]);
+                    } else {
+                        return reject(new Error("Account not found."));
+                    }
+                },
+                reject);
     });
 }
 
@@ -221,10 +225,46 @@ function remove_account(request, reply) {
  * @return {[type]}         [description]
  */
 function signup(request, reply) {
-    return Q({
-        status: "successful",
-        status_code: 501
-    });
+
+    if (request.payload.password !== request.payload.password_confirmation) {
+        return reply({
+            status: "error",
+            status_message: "passwords are not identical"
+        }).type("application/json").code(400);
+    }
+
+    let new_account = {
+        $set: {
+            username: request.payload.username,
+            password: auth_util.encrypt_password(request.payload.password),
+            first_name: request.payload.first_name || "",
+            locale: request.payload.locale || "",
+            last_name: request.payload.last_name || "",
+            accept_terms: request.payload.accept_terms || false
+        }
+    };
+
+    db_mgr.updateOne(
+            app_config.get("app:db_collections:user_account"), {
+                username: {
+                    $eq: null
+                }
+            }, new_account, {
+                upsert: true
+            })
+        .then((result) => {
+            //TODO: send email for activation
+            //
+            return reply({
+                status: "success",
+                status_message: "account created"
+            }).type("application/json").code(200);
+        }, (err) => {
+            return reply({
+                status: "error",
+                status_message: err.message
+            }).type("application/json").code(400);
+        });
 
 }
 

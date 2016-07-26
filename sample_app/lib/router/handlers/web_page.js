@@ -5,7 +5,7 @@
 "use strict";
 
 let path = require("path"),
-    dbMgr = require("valde-hapi").database,
+    db_mgr = require("valde-hapi").database,
     ObjectId = require("mongodb").ObjectID,
     app_config = require("valde-hapi").app_config;
 
@@ -17,18 +17,18 @@ function handler(request, reply) {
 
     if (request.auth.isAuthenticated) {
         //add the user account data to the model
-        let collectionName = "sa_customer_accounts";
 
-        dbMgr.find(
-                collectionName, {
-                    "_id": request.auth.credentials.account_id
+        db_mgr.find(
+                app_config.get("app:db_collections:user_account"), {
+                    "username": request.auth.credentials.username
                 })
             .then(
-                (accountData) => {
-                    request.__valde.web_model.account_type = request.auth.credentials.account_type;
-                    request.__valde.web_model.account_data = accountData;
+                (accounts) => {
+                    if (accounts.length > 0) {
+                        request.__valde.web_model.account_data = accounts[0];
+                    }
                 },
-                function(err) {})
+                (err) => {})
             .catch(function(err) {})
             .finally(function() {
                 reply.view(request.__valde.web_model.pageViewTemplate, request.__valde.web_model);

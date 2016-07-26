@@ -18,7 +18,6 @@ db.createUser({
     }]
 });
 
-
 /**
  *
  * @type {Object}
@@ -28,19 +27,38 @@ var authorization_request = {
 };
 db.authorization_request.insert(authorization_request);
 
-
-
 /**
  * authorization_request expiration index:
  */
-db.authorization_request.createIndex({"expire_on": 1}, {expireAfterSeconds: 600});
+db.authorization_request.createIndex({
+    "expire_on": 1
+}, {
+    expireAfterSeconds: 600
+});
 
 db.authorization_request.remove({});
-
 
 /**
  * oidc_token expiration index:
  */
-db.oidc_token.createIndex({"expire_on": 1}, {expireAfterSeconds: 172800});
+db.oidc_token.createIndex({
+    "expire_on": 1
+}, {
+    expireAfterSeconds: 172800
+});
 
 db.oidc_token.remove({});
+
+/**
+ * user account collection
+ */
+db.user_account.createIndex({
+    "username": 1
+}, {
+    unique: true
+});
+
+db.user_account.createIndex({
+    "username": 1,
+    "password": 1
+});
