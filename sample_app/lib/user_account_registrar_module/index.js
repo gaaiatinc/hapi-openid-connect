@@ -3,6 +3,8 @@
  *
  *
  */
+"use strict";
+
 let Q = require("q");
 let crypto = require("crypto");
 let moment = require("moment");

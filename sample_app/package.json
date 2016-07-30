@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/gaaiatinc",
   "dependencies": {
-    "hapi-openid-connect": "^1.2.3",
+    "hapi-openid-connect": "^1.3.0",
     "lodash": "^4.13.1",
     "mobile-detect": "^1.3.2",
     "react-bootstrap": "^0.29.4",
