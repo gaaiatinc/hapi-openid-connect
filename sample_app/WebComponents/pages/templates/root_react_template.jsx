@@ -33,7 +33,7 @@ export default class RootTemplate extends React.Component {
     static getExternalAssetsDescriptor(model) {
         const assets = {
             javascript: [
-                "https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react.min.js", "https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.min.js", "https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap/0.29.4/react-bootstrap.min.js"
+                "https://cdnjs.cloudflare.com/ajax/libs/react/15.3.0/react.min.js", "https://cdnjs.cloudflare.com/ajax/libs/react/15.3.0/react-dom.min.js", "https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap/0.30.1/react-bootstrap.min.js"
             ],
             styles: ["https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css", "https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css"]
         };

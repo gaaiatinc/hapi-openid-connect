@@ -41,7 +41,7 @@ export default class AppMainPage extends RootTemplate {
         return (
 
             <div>
-
+                <h1>Welcome to OIDC sample app</h1>
             </div>
         );
     }
