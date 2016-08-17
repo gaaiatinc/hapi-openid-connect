@@ -26,38 +26,26 @@ let app_config = require("valde-hapi").app_config;
  * The user profile must have a unique attirbute named _id, that has a toString()
  *    method, and it must be less than 255 characters (as per OpenID specs).
  *
- * @param  {[type]} request      [description]
- * @return {[type]}              [description]
+ *
+ * @param  {[type]} username [description]
+ * @param  {[type]} password [description]
+ * @return {[type]}          [description]
  */
-function get_user_account_for_signin(request) {
+function get_user_account_id_for_credentials(username, password) {
 
     return Q.Promise((resolve, reject) => {
 
         db_mgr.find(
                 app_config.get("app:db_collections:user_account"), {
-                    "username": request.payload.username,
-                    "password": auth_util.encrypt_password(request.payload.password)
+                    "username": username,
+                    "password": auth_util.encrypt_password(password)
                 }, {
                     "limit": 1
                 })
             .then(
                 (accounts) => {
                     if (accounts.length > 0) {
-                        var shasum = crypto.createHash("sha1");
-                        shasum.update(String(request.payload.username));
-                        shasum.update(String(request.headers["accept-language"]));
-                        shasum.update(String(request.headers["user-agent"]));
-                        var device_fingerprint = "29af01" + shasum.digest("hex").substr(5);
-
-                        var expire_on = moment().add(6, "months");
-                        var session = {
-                            device_fingerprint: device_fingerprint,
-                            username: request.payload.username,
-                            expire_on: expire_on.format()
-                        };
-                        request.cookieAuth.set(session);
-
-                        return resolve(accounts[0]);
+                        return resolve(accounts[0]._id.toString());
                     } else {
                         return reject(new Error("Account not found."));
                     }
@@ -124,19 +112,6 @@ function delete_user_account(username) {
     });
 }
 
-/**
- * This is a demo omplementation which does not implement all the typical
- * tasks involved in marking a user profile on a device as signed out.
- *
- * @param  {[type]} request [description]
- * @return {[type]}         [description]
- */
-function update_user_account_for_signout(username) {
-    return Q({
-        status: "successful",
-        status_code: 200
-    });
-}
 
 /**
  *
@@ -275,8 +250,7 @@ function signup(request, reply) {
  * @type {Object}
  */
 module.exports = {
-    get_user_account_for_signin,
-    update_user_account_for_signout,
+    get_user_account_id_for_credentials,
     encrypt_password: auth_util.encrypt_password,
     post_user_account,
     put_user_account,

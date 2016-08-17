@@ -66,6 +66,7 @@ Where _oidc_options_ is a json configuration object as follows:
     "version": 1,
     "configuration": {
         "issuer": "https://localhost:8443/sample_app/oidc",
+        "issuer_audience": "123456788",
         "scopes_supported": [
             "profile",
             "address",
@@ -137,23 +138,15 @@ Most of the attributes in the json configuration object are self-explanatory, an
 
 - _user_account_registrar_module_: This attribute is a path to a _commonjs_ module which will be "required" by the hapi-openid-connect code. The hapi-openid-connect plugin require this module to export the following functions, **_which must return promises_**:
 
-  - _get_user_account_for_signin(request)_:
+  - _get_user_account_id_for_credentials(username, password)_:
 
-    - verify that the username (email) and password match a user account record
+    - verify that the username and password match a user account record
     - if the user account is found, set the _hapi-auth-cookie_ session cookie for the request if not already set.
-    - return a Promise that must resolve with the user account
-    - reject the Promise if the user account does not exist.
+    - return a Promise that must resolve with the user account id (the id is a unique string for the respective user account)
+    - reject the Promise if the user account does not exist, or the credentials provided do not match.
 
-    The user account must have a unique attribute named **__id_**, that has a toString() method, and it must be less than 255 characters (as per the OpenID specs).
+    The returned/resolved user account id must be a string, and it must be less than 255 characters (as per the OpenID specs).
 
-  - _update_user_account_for_signout(username)_:
-
-    - mark the respective user account as necessary for signed out.
-
-
-  - _encrypt_password(real_password)_:
-
-    - calculate the encrypted equivalent of the _real_password_, so that it can be compared with the encrypted password stored in the user account persistent store.
 
 #### client_endpoint
 
@@ -166,6 +159,10 @@ Most of the attributes in the json configuration object are self-explanatory, an
     - redirect_uri_path, and
     - description, which describes the permissions the client is requesting.
 
-  - _encrypt_password(real_password)_:
+  - _get_client_account_id_for_credentials(username, password)_:
 
-      - calculate the encrypted equivalent of the _real_password_, so that it can be compared with the encrypted password stored in the user account persistent store.
+    - verify that the username and password match a client account record
+    - return a Promise that must resolve with the client account id (the id is a unique string for the respective client account)
+    - reject the Promise if the client account does not exist, or the credentials provided do not match.
+
+    The returned/resolved user account id must be a string, and it must be less than 255 characters (as per the OpenID specs).

@@ -54,10 +54,35 @@ function get_client_registration(client_id) {
 }
 
 /**
+ *
+ * @param  {[type]} username [description]
+ * @param  {[type]} password [description]
+ * @return {[type]}          [description]
+ */
+function get_client_account_id_for_credentials(username, password) {
+    return Q.Promise((resolve, reject) => {
+        if (username === "test_client@clientcorp.com") {
+            return resolve({
+                redirect_uri_hostname: "localhost.sampleapp.com",
+                redirect_uri_port: "8443",
+                redirect_uri_path: "/sample_app/client_services",
+                description: "sample app",
+                client_id: 123456,
+                username: "test_client@clientcorp.com",
+                password: "client_pwd"
+
+            });
+        } else {
+            return reject(new Error("client ID not registered!"));
+        }
+    });
+}
+
+/**
  * [exports description]
  * @type {Object}
  */
 module.exports = {
     get_client_registration,
-    encrypt_password: auth_util.encrypt_password
+    get_client_account_id_for_credentials
 };
