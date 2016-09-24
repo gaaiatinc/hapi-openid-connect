@@ -147,7 +147,6 @@ Most of the attributes in the json configuration object are self-explanatory, an
 
     The returned/resolved user account id must be a string, and it must be less than 255 characters (as per the OpenID specs).
 
-
 #### client_endpoint
 
 - _client_registrar_module_: This attribute is a path to a _commonjs_ module which will be "required" by the hapi-openid-connect code. The hapi-openid-connect plugin require this module to export the following functions, **_which must return promises_**:
@@ -164,5 +163,14 @@ Most of the attributes in the json configuration object are self-explanatory, an
     - verify that the username and password match a client account record
     - return a Promise that must resolve with the client account id (the id is a unique string for the respective client account)
     - reject the Promise if the client account does not exist, or the credentials provided do not match.
+
+    The returned/resolved user account id must be a string, and it must be less than 255 characters (as per the OpenID specs).
+
+  - _process_signin_request(request, reply)_:
+
+    - verify that the username and password match a client account record
+    - setup the session state to reflect signed in state if an account is found for the credentials in request.payload.username and request.payload.password
+    - return a Promise that must resolve with the client account id (the id is a unique string for the respective client account)
+    - reject the Promise if the client account does not exist, or the credentials provided in request.payload do not match.
 
     The returned/resolved user account id must be a string, and it must be less than 255 characters (as per the OpenID specs).

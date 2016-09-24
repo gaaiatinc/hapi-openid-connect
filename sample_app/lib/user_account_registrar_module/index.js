@@ -13,7 +13,7 @@ let db_mgr = require("valde-hapi").database;
 let app_config = require("valde-hapi").app_config;
 
 /**
- * This is a demo implementaion of the get_user_account_for_signin() function
+ * This is a demo implementaion of the process_signin_request() function
  * that is required for the hapi-openid-connect plugin.  The implementaion must
  * perform the following:
  *
@@ -21,7 +21,52 @@ let app_config = require("valde-hapi").app_config;
  * 1- verify that the username (email) and password match a user account record
  * 2- if the user account is found, set the session cookie for the request if
  *     not already set.
- * 3- return a Promise that must resolve with the user profile
+ * 3- return a Promise that must resolve with the user account ID (string)
+ *
+ * The user profile must have a unique attirbute named _id, that has a toString()
+ *    method, and it must be less than 255 characters (as per OpenID specs).
+ *
+ *
+ * @param  {[type]} username [description]
+ * @param  {[type]} password [description]
+ * @return {[type]}          [description]
+ */
+function process_signin_request(request, reply) {
+    return Q.Promise((resolve, reject) => {
+
+        db_mgr.find(
+                app_config.get("app:db_collections:user_account"), {
+                    "username": request.payload.username,
+                    "password": auth_util.encrypt_password(request.payload.password)
+                }, {
+                    "limit": 1
+                })
+            .then(
+                (accounts) => {
+                    /**
+                     * In this demo implementaion, the sessin cookie is not set up
+                     * A production implementaion must set the session state to
+                     * reflect signed in state.
+                     *
+                     */
+                    if (accounts.length > 0) {
+                        return resolve(accounts[0]._id.toString());
+                    } else {
+                        return reject(new Error("Account not found."));
+                    }
+                },
+                reject);
+    });
+}
+
+/**
+ * This is a demo implementaion of the process_signin_request() function
+ * that is required for the hapi-openid-connect plugin.  The implementaion must
+ * perform the following:
+ *
+ *
+ * 1- verify that the username (email) and password match a user account record
+ * 2- return a Promise that must resolve with the user account ID (string)
  *
  * The user profile must have a unique attirbute named _id, that has a toString()
  *    method, and it must be less than 255 characters (as per OpenID specs).
