@@ -1,6 +1,6 @@
 {
   "name": "hapi-openid-connect",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "A Hapi plugin implementation of the core and discovery OpenID-Connect provider API",
   "main": "./lib/index.js",
   "scripts": {
@@ -36,15 +36,15 @@
     "grunt-contrib-nodeunit": "^1.0.0",
     "grunt-contrib-uglify": "^2.0.0",
     "grunt-contrib-watch": "^1.0.0",
-    "mocha": "^3.0.2"
+    "mocha": "^3.1.0"
   },
   "dependencies": {
-    "boom": "^4.0.0",
+    "boom": "^4.1.0",
     "form-urlencoded": "^1.4.1",
     "hapi-auth-cookie": "^6.1.1",
     "joi": "^9.0.4",
     "jsonwebtoken": "^7.1.9",
-    "lodash": "^4.16.1",
+    "lodash": "^4.16.2",
     "moment": "^2.15.1",
     "object-assign": "^4.1.0",
     "q": "^1.4.1"
