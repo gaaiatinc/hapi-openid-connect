@@ -296,6 +296,7 @@ function signup(request, reply) {
  */
 module.exports = {
     get_user_account_id_for_credentials,
+    process_signin_request,
     encrypt_password: auth_util.encrypt_password,
     post_user_account,
     put_user_account,

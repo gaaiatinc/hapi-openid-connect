@@ -97,6 +97,7 @@
             "schemes": [
                 "https"
             ],
+            "host": "localhost.sampleapp.com:8443",
             "documentationPath": "/sample_app/oidc/api/swagger-ui",
             "swaggerUIPath": "/sample_app/oidc/api/swaggerui/",
             "jsonPath": "/sample_app/oidc/api/swagger.json",

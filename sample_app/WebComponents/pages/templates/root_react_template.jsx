@@ -64,7 +64,11 @@ export default class RootTemplate extends React.Component {
     *
     */
     static getBodyEndElement() {
-        return "div";
+        return (
+            <div>
+                {/* <pre>{JSON.stringify(model, null, 4)}</pre> */}
+            </div>
+        );
     }
 
     /**
