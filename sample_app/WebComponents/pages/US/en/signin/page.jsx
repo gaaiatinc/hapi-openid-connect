@@ -42,7 +42,11 @@ export default class AppMainPage extends RootTemplate {
      * @return {[type]} [description]
      */
     handleClick() {
-        this.__bodyMainRef.setState({age: Math.random()});
+        this
+            .__bodyMainRef
+            .setState({
+                age: Math.random()
+            });
     }
 
     /**
@@ -53,7 +57,9 @@ export default class AppMainPage extends RootTemplate {
         let action_string = "/sample_app/oidc/signin";
 
         if (this.props.model.requestInfo.query["authorization_request_id"]) {
-            action_string += "?authorization_request_id=" + this.props.model.requestInfo.query["authorization_request_id"];
+            action_string += "?authorization_request_id=" + encodeURIComponent(this.props.model.requestInfo.query["authorization_request_id"]);
+        } else if (this.props.model.requestInfo.query["redirect_uri"]) {
+            action_string += "?redirect_uri=" + encodeURIComponent(this.props.model.requestInfo.query["redirect_uri"]);
         }
 
         return (
@@ -62,6 +68,7 @@ export default class AppMainPage extends RootTemplate {
                 <Row>
                     <Col sm={8} smOffset={2} xs={12}>
                         <h1>OpenID-Connect 2.0</h1>
+                        <pre>{JSON.stringify(this.props.model, null, 4)}</pre>
                     </Col>
                 </Row>
                 <Row>

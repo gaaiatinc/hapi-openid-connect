@@ -23,7 +23,7 @@
             "cookie": {
                 "session_cookie_password": "some strong session password  123456789012345678901234567890",
                 "cookie_name": "sats",
-                "on_auth_failure_redirect_to": "/sample_app/signin",
+                "on_auth_failure_redirect_to": "/sample_app/oidc/signin",
                 "session_cookie_ttl": 15552000000,
                 "session_cookie_validation_module": "/lib/auth/cookie_validator"
             },
@@ -55,7 +55,7 @@
             "oidc_url_path": "/sample_app/oidc",
             "version": 1,
             "configuration": {
-                "issuer": "https://localhost:8443/sample_app/oidc",
+                "issuer": "https://localhost.sampleapp.com:8443/sample_app/oidc",
                 "issuer_audience": "123456",
                 "scopes_supported": [
                     "profile",

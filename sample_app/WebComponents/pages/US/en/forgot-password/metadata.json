@@ -5,7 +5,7 @@
         "logged_in_only": false,
         "visibility": "WORLDWIDE"
     },
-    "enabled": true,
+    "enabled": false,
     "campaign_start_date": "2013-08-14 07:00:00",
     "campaign_end_date": "2027-07-09 07:00:00",
 
