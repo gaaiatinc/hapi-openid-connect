@@ -34,22 +34,36 @@ let app_config = require("valde-hapi").app_config;
 function process_signin_request(request, reply) {
     return Q.Promise((resolve, reject) => {
 
-        db_mgr.find(app_config.get("app:db_collections:user_account"), {
+        db_mgr.findOne(app_config.get("app:db_collections:user_account"), {
             "username": request.payload.username,
             "password": auth_util.encrypt_password(request.payload.password)
-        }, {"limit": 1}).then((accounts) => {
+        }).then((account) => {
             /**
-                     * In this demo implementaion, the sessin cookie is not set up
-                     * A production implementaion must set the session state to
-                     * reflect signed in state.
-                     *
-                     */
-            if (accounts.length > 0) {
-                return resolve(accounts[0]._id.toString());
+             * In this demo implementaion, the sessin cookie is set up without
+             * encryption!!!
+             *
+             * A production implementaion must set the session state to
+             * reflect signed in state.
+             *
+             */
+
+            if (account) {
+                var expire_on = moment().add(6, "months");
+                var session = {
+                    username: request.payload.username,
+                    expire_on: expire_on.format()
+                };
+                request
+                    .cookieAuth
+                    .set(session);
+
+                return resolve(account._id.toString());
             } else {
                 return reject(new Error("Account not found."));
             }
-        }, reject);
+        }, (err) => {
+            reject(err);
+        });
     });
 }
 
