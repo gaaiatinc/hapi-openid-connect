@@ -57,9 +57,11 @@ export default class AppMainPage extends RootTemplate {
         let action_string = "/sample_app/oidc/signin";
 
         if (this.props.model.requestInfo.query["authorization_request_id"]) {
-            action_string += "?authorization_request_id=" + encodeURIComponent(this.props.model.requestInfo.query["authorization_request_id"]);
+            action_string += "?authorization_request_id=" + this.props.model.requestInfo.query["authorization_request_id"];
         } else if (this.props.model.requestInfo.query["redirect_uri"]) {
-            action_string += "?redirect_uri=" + encodeURIComponent(this.props.model.requestInfo.query["redirect_uri"]);
+            action_string += "?redirect_uri=" + this.props.model.requestInfo.query["redirect_uri"];
+        } else {
+            action_string += "?redirect_uri=/sample_app/oidc/account";
         }
 
         return (
