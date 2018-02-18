@@ -5,5 +5,6 @@
   "main": "index.js",
   "author": "Ali Ismael",
   "license": "Apache-2.0",
+  "once": true,
   "dependencies": {}
 }

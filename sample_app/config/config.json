@@ -4,42 +4,49 @@
     "app_url_domain": "sampleapp.com",
     "external_server_url": "https://localhost.sampleapp.com:8443",
     "platform": {
-        "supported_locales": [
-            "en-US",
-            "en-GB",
-            "fr-FR",
-            "de-DE",
-            "es-ES",
-            "pt-PT",
-            "da-DK",
-            "nl-NL",
-            "sv-SE",
-            "zh-CN",
-            "hi-IN",
-            "it-IT",
-            "ja-JP"
-        ],
-        "auth": {
-            "cookie": {
+        "plugins": {
+            "hapi_auth_cookie": {
                 "session_cookie_password": "some strong session password  123456789012345678901234567890",
                 "cookie_name": "sats",
                 "on_auth_failure_redirect_to": "/sample_app/oidc/signin",
                 "session_cookie_ttl": 15552000000,
                 "session_cookie_validation_module": "/lib/auth/cookie_validator"
             },
-            "basic": {
+            "hapi_auth_basic": {
                 "basic_auth_validation_module": "/lib/auth/basic_validator",
                 "unauthorized_response_attributes": ""
-            }
+            },
+            "valde_locale_resolver": {
+                "supported_locales": [
+                    "en-US",
+                    "en-GB",
+                    "fr-FR",
+                    "de-DE",
+                    "es-ES",
+                    "pt-PT",
+                    "da-DK",
+                    "nl-NL",
+                    "sv-SE",
+                    "zh-CN",
+                    "hi-IN",
+                    "it-IT",
+                    "ja-JP"
+                ]
+            },
+            "valde_visitor_tracking": {
+                "vt_cookie_password": "some strong visitor tracking password 123456789012345678901234567890",
+                "tracking_cookie_name": "vtid",
+                "ttl": 315360000
+            },
+            "valde_csrf_agent": {
+                "csrf_header_password": "some strong CSRF password 123456789012345678901234567890",
+                "csrf_header_name": "sa-decorator",
+                "enabled_by_default": false
+            },
+            "valde_resource_set": {},
+            "valde_web_model": {}
         },
-        "visitor_tracking": {
-            "vt_cookie_password": "some strong visitor tracking password 123456789012345678901234567890"
-        },
-        "csrf": {
-            "csrf_header_password": "some strong CSRF password 123456789012345678901234567890",
-            "csrf_header_name": "sa-decorator"
-        },
-        "locale_resolver": {},
+
         "static_resources_path": "./public"
     },
     "router": {
@@ -48,76 +55,7 @@
             "params": {}
         }
     },
-    "extensions": [],
-    "plugins": [{
-        "module_name": "hapi-openid-connect",
-        "module_options": {
-            "oidc_url_path": "/sample_app/oidc",
-            "version": 1,
-            "configuration": {
-                "issuer": "https://localhost.sampleapp.com:8443/sample_app/oidc",
-                "issuer_audience": "123456",
-                "scopes_supported": [
-                    "profile",
-                    "address",
-                    "email",
-                    "phone"
-                ],
-                "jwk": {
-                    "cert_type_rsa": true,
-                    "priv_key_file_name": "./config/oidc/sampleapp-key.pem",
-                    "pub_key_file_name": "./config/oidc/sampleapp-cert.pem",
-                    "cert_chain_file_name": "./config/oidc/sampleapp-cert-chain.pem"
-                },
-                "authorization_endpoint": {
-                    "authorization_request_registrar_module": "/lib/authorization_request_registrar_module"
-                },
-                "token_endpoint": {
-                    "token_registrar_module": "/lib/token_registrar_module",
-                    "authorization_code_grant_type": {
-                        "token_duration_seconds": 600
-                    },
-                    "password_grant_type": {
-                        "token_duration_seconds": 900
-                    }
-                },
-                "user_info_endpoint": {
-                    "user_authentication_url": "https://localhost.sampleapp.com:8443/sample_app/oidc/signin",
-                    "user_post_login_account_url": "https://localhost.sampleapp.com:8443/sample_app/oidc/account",
-                    "user_account_registrar_module": "/lib/user_account_registrar_module"
-                },
-                "client_endpoint": {
-                    "client_registrar_module": "/lib/client_registrar_module"
-                }
-            }
-        }
-    }, {
-        "module_name": "hapi-swagger",
-        "module_options": {
-            "schemes": [
-                "https"
-            ],
-            "host": "localhost.sampleapp.com:8443",
-            "documentationPath": "/sample_app/oidc/api/swagger-ui",
-            "swaggerUIPath": "/sample_app/oidc/api/swaggerui/",
-            "jsonPath": "/sample_app/oidc/api/swagger.json",
-            "basePath": "/sample_app/oidc",
-            "pathPrefixSize": 3,
-            "info": {
-                "title": "SampleApp REST API",
-                "version": "V1.0",
-                "description": "The REST API published by SampleApp for moble applications integration.",
-                "termsOfService": "https://www.sampleapp.com/terms-and-conditions",
-                "contact": {
-                    "email": "support@sampleapp.com"
-                },
-                "license": {
-                    "name": "SampleApp license - TBD",
-                    "url": "https://www.sampleapp.com/api-license"
-                }
-            }
-        }
-    }],
+
     "vault_keeper": {
         "keeper_url": "https://localhost:443/vault_keeper",
         "handshake": "some strong handshake key  123456789012345678901234567890",
@@ -125,6 +63,79 @@
         "hmac_key": "some hmac string 123456789012345678901234567890"
     },
     "app": {
+        "plugins": {
+            "hapi-openid-connect": {
+                "module_name": "hapi-openid-connect",
+                "module_options": {
+                    "oidc_url_path": "/sample_app/oidc",
+                    "version": 1,
+                    "configuration": {
+                        "issuer": "https://localhost.sampleapp.com:8443/sample_app/oidc",
+                        "issuer_audience": "123456",
+                        "scopes_supported": [
+                            "profile",
+                            "address",
+                            "email",
+                            "phone"
+                        ],
+                        "jwk": {
+                            "cert_type_rsa": true,
+                            "priv_key_file_name": "./config/oidc/sampleapp-key.pem",
+                            "pub_key_file_name": "./config/oidc/sampleapp-cert.pem",
+                            "cert_chain_file_name": "./config/oidc/sampleapp-cert-chain.pem"
+                        },
+                        "authorization_endpoint": {
+                            "authorization_request_registrar_module": "/lib/authorization_request_registrar_module"
+                        },
+                        "token_endpoint": {
+                            "token_registrar_module": "/lib/token_registrar_module",
+                            "authorization_code_grant_type": {
+                                "token_duration_seconds": 600
+                            },
+                            "password_grant_type": {
+                                "token_duration_seconds": 900
+                            }
+                        },
+                        "user_info_endpoint": {
+                            "user_authentication_url": "https://localhost.sampleapp.com:8443/sample_app/oidc/signin",
+                            "user_post_login_account_url": "https://localhost.sampleapp.com:8443/sample_app/oidc/account",
+                            "user_account_registrar_module": "/lib/user_account_registrar_module"
+                        },
+                        "client_endpoint": {
+                            "client_registrar_module": "/lib/client_registrar_module"
+                        }
+                    }
+                }
+            },
+            "hapi-swagger": {
+                "module_name": "hapi-swagger",
+                "module_options": {
+                    "schemes": [
+                        "https"
+                    ],
+                    "host": "localhost.sampleapp.com:8443",
+                    "documentationPath": "/sample_app/oidc/api/swagger-ui",
+                    "swaggerUIPath": "/sample_app/oidc/api/swaggerui/",
+                    "jsonPath": "/sample_app/oidc/api/swagger.json",
+                    "basePath": "/sample_app/oidc",
+                    "pathPrefixSize": 3,
+                    "info": {
+                        "title": "SampleApp REST API",
+                        "version": "V1.0",
+                        "description": "The REST API published by SampleApp for moble applications integration.",
+                        "termsOfService": "https://www.sampleapp.com/terms-and-conditions",
+                        "contact": {
+                            "email": "support@sampleapp.com"
+                        },
+                        "license": {
+                            "name": "SampleApp license - TBD",
+                            "url": "https://www.sampleapp.com/api-license"
+                        }
+                    }
+                }
+            }
+        },
+
         "session": {
             "session_duration": 3600
         },

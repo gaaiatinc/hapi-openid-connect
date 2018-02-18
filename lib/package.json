@@ -1,6 +1,6 @@
 {
   "name": "hapi-openid-connect",
-  "version": "1.0.0",
+  "version": "3.0.0",
   "description": "OpenID-Connect implementation as a hapi plugin",
   "main": "index.js",
   "author": "Ali Ismael",
