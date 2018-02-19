@@ -37,3 +37,6 @@ test/single
 temp
 
 sample_app
+
+package-lock.json
+
