@@ -3,7 +3,7 @@
  */
 "use strict";
 
-import React, {Component, PropTypes} from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 
 import RootTemplate from "pages/templates/root_react_template";

@@ -5,37 +5,25 @@
 "use strict";
 
 let path = require("path"),
-    db_mgr = require("valde-hapi").database,
+    dbMgr = require("../../database"),
     ObjectId = require("mongodb").ObjectID,
+    _set = require("lodash/set"),
+    _get = require("lodash/get"),
     app_config = require("valde-hapi").app_config;
 
-function handler(request, reply) {
-
-    if (!(request.__valde.web_model)) {
-        request.__valde.web_model = {};
-    }
-
+async function handler(request, h) {
     if (request.auth.isAuthenticated) {
-        //add the user account data to the model
-
-        db_mgr.find(
-                app_config.get("app:db_collections:user_account"), {
-                    "username": request.auth.credentials.username
-                })
-            .then(
-                (accounts) => {
-                    if (accounts.length > 0) {
-                        request.__valde.web_model.account_data = accounts[0];
-                    }
-                },
-                (err) => {})
-            .catch(function(err) {})
-            .finally(function() {
-                reply.view(request.__valde.web_model.pageViewTemplate, request.__valde.web_model);
-            });
-    } else {
-        reply.view(request.__valde.web_model.pageViewTemplate, request.__valde.web_model);
+        try {
+            let accounts = await dbMgr.find(app_config.get("app:db_collections:user_account"), {"username": request.auth.credentials.username});
+            if (accounts && accounts.length > 0) {
+                _set(request, "plugins.valde_web_model.account_data", accounts[0]);
+            }
+        } catch (err) {
+            //error case!!!   Request is authenticated with no account username in auth!!!
+        }
     }
+
+    return h.view(_get(request, "plugins.valde_web_model.pageViewTemplate"), _get(request, "plugins.valde_web_model"));
 }
 
 module.exports = {

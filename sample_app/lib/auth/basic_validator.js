@@ -3,7 +3,7 @@
  */
 "use strict";
 
-let db_mgr = require("valde-hapi").database,
+let dbMgr = require("../database"),
     app_config = require("valde-hapi").app_config,
     auth_util = require("./util");
 
@@ -33,10 +33,8 @@ module.exports = function(request, username, password, callback) {
         "password": password
     };
 
-    db_mgr.find(
-            "user_account", request_credentials, {
-                limit: 1
-            })
+    dbMgr
+        .find("user_account", request_credentials, {limit: 1})
         .then((user_accounts) => {
             if (user_accounts.length > 0) {
                 if (auth_util.encrypt_password(password) === user_accounts[0].password) {

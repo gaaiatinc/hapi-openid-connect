@@ -149,12 +149,12 @@ const init = (app_config, aLogger) => {
              * Connection to the database
              */
             (function dbConnect() {
-                mongo_client.connect(dbURL, connect_config, (err, db) => {
+                mongo_client.connect(dbURL, connect_config, (err, mongoClient) => {
                     if (err) {
                         logger.error(err);
                         setTimeout(dbConnect, app_config.get("app:database:connect_retry_millies"));
                     } else {
-                        dbInstance = db;
+                        dbInstance = mongoClient.db(dbName);
                         logger.info("Successfully connected to the database.");
                         return resolve();
                     }

@@ -28,9 +28,7 @@
 
 "use strict";
 
-let Q = require("q");
-
-let dbMgr = require("valde-hapi").database;
+let dbMgr = require("../database");
 
 /**
  * This function must return a promise, which persists the oidc_token
@@ -41,30 +39,27 @@ let dbMgr = require("valde-hapi").database;
  * @return oidc_token_id
  */
 function post_token(oidc_token) {
-    return Q.Promise((resolve, reject) => {
-        dbMgr.updateOne(
-                "oidc_token", {
-                    id_token: {
-                        $eq: null
-                    }
-                }, {
-                    $currentDate: {
-                        expire_on: true
-                    },
-                    $set: oidc_token
-                }, {
-                    upsert: true
-                })
-            .then(
-                (result) => {
-                    if (result.upsertedCount === 1) {
-                        return resolve(result.upsertedId._id);
-                    } else {
-                        return reject(new Error("No oidc_token recoreds inserted"));
-                    }
-                }, (err) => {
-                    reject(err);
-                });
+    return new Promise((resolve, reject) => {
+        dbMgr
+            .updateOne("oidc_token", {
+                id_token: {
+                    $eq: null
+                }
+            }, {
+                $currentDate: {
+                    expire_on: true
+                },
+                $set: oidc_token
+            }, {upsert: true})
+            .then((result) => {
+                if (result.upsertedCount === 1) {
+                    return resolve(result.upsertedId._id);
+                } else {
+                    return reject(new Error("No oidc_token recoreds inserted"));
+                }
+            }, (err) => {
+                reject(err);
+            });
     });
 }
 
@@ -76,30 +71,27 @@ function post_token(oidc_token) {
  * @return {[type]}                       [description]
  */
 function put_token(oidc_token) {
-    return Q.Promise((resolve, reject) => {
-        dbMgr.updateOne(
-                "oidc_token", {
-                    _id: {
-                        $eq: oidc_token._id
-                    }
-                }, {
-                    $currentDate: {
-                        expire_on: true
-                    },
-                    $set: oidc_token
-                }, {
-                    upsert: true
-                })
-            .then(
-                (result) => {
-                    if (result.modifiedCount === 1) {
-                        return resolve(oidc_token._id);
-                    } else {
-                        return reject(new Error("No oidc_token recoreds inserted"));
-                    }
-                }, (err) => {
-                    reject(err);
-                });
+    return new Promise((resolve, reject) => {
+        dbMgr
+            .updateOne("oidc_token", {
+                _id: {
+                    $eq: oidc_token._id
+                }
+            }, {
+                $currentDate: {
+                    expire_on: true
+                },
+                $set: oidc_token
+            }, {upsert: true})
+            .then((result) => {
+                if (result.modifiedCount === 1) {
+                    return resolve(oidc_token._id);
+                } else {
+                    return reject(new Error("No oidc_token recoreds inserted"));
+                }
+            }, (err) => {
+                reject(err);
+            });
     });
 }
 
@@ -120,9 +112,7 @@ function get_token(oidc_token_id) {
         _id: {
             $eq: oidc_token_id
         }
-    }, {
-        limit: 1
-    });
+    }, {limit: 1});
 }
 
 /**

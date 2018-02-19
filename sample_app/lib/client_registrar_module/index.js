@@ -13,7 +13,6 @@
  */
 "use strict";
 
-let Q = require("q");
 let auth_util = require("../auth/util");
 
 /**
@@ -35,7 +34,7 @@ let auth_util = require("../auth/util");
  */
 function get_client_registration(client_id) {
 
-    return Q.Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         if (client_id === "123456") {
             return resolve({
                 redirect_uri_hostname: "localhost.sampleapp.com",
@@ -60,7 +59,7 @@ function get_client_registration(client_id) {
  * @return {[type]}          [description]
  */
 function get_client_account_id_for_credentials(username, password) {
-    return Q.Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         if (username === "test_client@clientcorp.com") {
             return resolve({
                 redirect_uri_hostname: "localhost.sampleapp.com",

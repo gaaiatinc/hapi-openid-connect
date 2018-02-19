@@ -5,11 +5,10 @@
  */
 "use strict";
 
-let Q = require("q");
 let crypto = require("crypto");
 let moment = require("moment");
 let auth_util = require("../auth/util");
-let db_mgr = require("valde-hapi").database;
+let dbMgr = require("../database");
 let app_config = require("valde-hapi").app_config;
 
 /**
@@ -31,14 +30,15 @@ let app_config = require("valde-hapi").app_config;
  * @param  {[type]} password [description]
  * @return {[type]}          [description]
  */
-function process_signin_request(request, reply) {
-    return Q.Promise((resolve, reject) => {
-
-        db_mgr.findOne(app_config.get("app:db_collections:user_account"), {
-            "username": request.payload.username,
-            "password": auth_util.encrypt_password(request.payload.password)
-        }).then((account) => {
-            /**
+function process_signin_request(request, h) {
+    return new Promise((resolve, reject) => {
+        dbMgr
+            .findOne(app_config.get("app:db_collections:user_account"), {
+                "username": request.payload.username,
+                "password": auth_util.encrypt_password(request.payload.password)
+            })
+            .then((account) => {
+                /**
              * In this demo implementaion, the sessin cookie is set up without
              * encryption!!!
              *
@@ -47,23 +47,23 @@ function process_signin_request(request, reply) {
              *
              */
 
-            if (account) {
-                var expire_on = moment().add(6, "months");
-                var session = {
-                    username: request.payload.username,
-                    expire_on: expire_on.format()
-                };
-                request
-                    .cookieAuth
-                    .set(session);
+                if (account) {
+                    var expire_on = moment().add(6, "months");
+                    var session = {
+                        username: request.payload.username,
+                        expire_on: expire_on.format()
+                    };
+                    request
+                        .cookieAuth
+                        .set(session);
 
-                return resolve(account._id.toString());
-            } else {
-                return reject(new Error("Account not found."));
-            }
-        }, (err) => {
-            reject(err);
-        });
+                    return resolve(account._id.toString());
+                } else {
+                    return reject(new Error("Account not found."));
+                }
+            }, (err) => {
+                reject(err);
+            });
     });
 }
 
@@ -86,18 +86,20 @@ function process_signin_request(request, reply) {
  */
 function get_user_account_id_for_credentials(username, password) {
 
-    return Q.Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
 
-        db_mgr.find(app_config.get("app:db_collections:user_account"), {
-            "username": username,
-            "password": auth_util.encrypt_password(password)
-        }, {"limit": 1}).then((accounts) => {
-            if (accounts.length > 0) {
-                return resolve(accounts[0]._id.toString());
-            } else {
-                return reject(new Error("Account not found."));
-            }
-        }, reject);
+        dbMgr
+            .find(app_config.get("app:db_collections:user_account"), {
+                "username": username,
+                "password": auth_util.encrypt_password(password)
+            }, {"limit": 1})
+            .then((accounts) => {
+                if (accounts.length > 0) {
+                    return resolve(accounts[0]._id.toString());
+                } else {
+                    return reject(new Error("Account not found."));
+                }
+            }, reject);
     });
 }
 
@@ -109,7 +111,7 @@ function get_user_account_id_for_credentials(username, password) {
  * @return {[type]}              [description]
  */
 function post_user_account(user_account) {
-    return Q({status: "successful", status_code: 200});
+    return Promise.resolve({status: "successful", status_code: 200});
 }
 
 /**
@@ -120,7 +122,7 @@ function post_user_account(user_account) {
  * @return {[type]}              [description]
  */
 function put_user_account(user_account) {
-    return Q({status: "successful", status_code: 200});
+    return Promise.resolve({status: "successful", status_code: 200});
 }
 
 /**
@@ -131,7 +133,7 @@ function put_user_account(user_account) {
  * @return {[type]}                 [description]
  */
 function get_user_account(username) {
-    return Q({_id: "1235asddgf34545", username: "tester@sampleapp.com", password: "dfxTK8Gf8LbreZtBDeRrElMAQz9pzinouAp2pr2g8uE=", region: "en-US"});
+    return Promise.resolve({_id: "1235asddgf34545", username: "tester@sampleapp.com", password: "dfxTK8Gf8LbreZtBDeRrElMAQz9pzinouAp2pr2g8uE=", region: "en-US"});
 }
 
 /**
@@ -142,83 +144,84 @@ function get_user_account(username) {
  * @return {[type]}                 [description]
  */
 function delete_user_account(username) {
-    return Q({status: "successful", status_code: 200});
+    return Promise.resolve({status: "successful", status_code: 200});
 }
 
 /**
  *
  * @param  {[type]} request [description]
- * @param  {[type]} reply   [description]
+ * @param  {[type]} h   [description]
  * @return {[type]}         [description]
  */
-function change_password(request, reply) {
-    return Q({status: "successful", status_code: 501});
+function change_password(request, h) {
+    return Promise.resolve({status: "successful", status_code: 501});
 }
 
 /**
  *
  * @param {[type]} request [description]
- * @param {[type]} reply   [description]
+ * @param {[type]} h   [description]
  * @return {[type]}         [description]
  */
-function request_password_reset(request, reply) {
-    return Q({status: "successful", status_code: 501});
+function request_password_reset(request, h) {
+    return Promise.resolve({status: "successful", status_code: 501});
 }
 
 /**
  *
  * @param {[type]} request [description]
- * @param {[type]} reply   [description]
+ * @param {[type]} h   [description]
  * @return {[type]}         [description]
  */
-function perform_password_reset(request, reply) {
-    return Q({status: "successful", status_code: 501});
+function perform_password_reset(request, h) {
+    return Promise.resolve({status: "successful", status_code: 501});
 
 }
 
 /**
  *
  * @param  {[type]} request [description]
- * @param  {[type]} reply   [description]
+ * @param  {[type]} h   [description]
  * @return {[type]}         [description]
  */
-function activate(request, reply) {
-    return Q({status: "successful", status_code: 501});
+function activate(request, h) {
+    return Promise.resolve({status: "successful", status_code: 501});
 
 }
 
 /**
  *
  * @param  {[type]} request [description]
- * @param  {[type]} reply   [description]
+ * @param  {[type]} h   [description]
  * @return {[type]}         [description]
  */
-function resend_activation_code(request, reply) {
-    return Q({status: "successful", status_code: 501});
+function resend_activation_code(request, h) {
+    return Promise.resolve({status: "successful", status_code: 501});
 
 }
 
 /**
  *
  * @param  {[type]} request [description]
- * @param  {[type]} reply   [description]
+ * @param  {[type]} h   [description]
  * @return {[type]}         [description]
  */
-function remove_account(request, reply) {
-    return Q({status: "successful", status_code: 501});
+function remove_account(request, h) {
+    return Promise.resolve({status: "successful", status_code: 501});
 
 }
 
 /**
  *
  * @param  {[type]} request [description]
- * @param  {[type]} reply   [description]
+ * @param  {[type]} h   [description]
  * @return {[type]}         [description]
  */
-function signup(request, reply) {
+function signup(request, h) {
 
     if (request.payload.password !== request.payload.password_confirmation) {
-        return reply({status: "error", status_message: "passwords are not identical"})
+        return h
+            .response({status: "error", status_message: "passwords are not identical"})
             .type("application/json")
             .code(400);
     }
@@ -234,21 +237,25 @@ function signup(request, reply) {
         }
     };
 
-    db_mgr.updateOne(app_config.get("app:db_collections:user_account"), {
-        username: {
-            $eq: null
-        }
-    }, new_account, {upsert: true}).then((result) => {
-        //TODO: send email for activation
-        //
-        return reply({status: "success", status_message: "account created"})
-            .type("application/json")
-            .code(200);
-    }, (err) => {
-        return reply({status: "error", status_message: err.message})
-            .type("application/json")
-            .code(400);
-    });
+    dbMgr
+        .updateOne(app_config.get("app:db_collections:user_account"), {
+            username: {
+                $eq: null
+            }
+        }, new_account, {upsert: true})
+        .then((result) => {
+            //TODO: send email for activation
+            //
+            return h
+                .response({status: "success", status_message: "account created"})
+                .type("application/json")
+                .code(200);
+        }, (err) => {
+            return h
+                .response({status: "error", status_message: err.message})
+                .type("application/json")
+                .code(400);
+        });
 
 }
 

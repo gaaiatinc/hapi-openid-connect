@@ -4,7 +4,6 @@
 "use strict";
 
 let path = require("path"),
-    Q = require("q"),
     fs = require("fs"),
     jwt = require("jsonwebtoken"),
     Joi = require("joi");

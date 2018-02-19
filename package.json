@@ -14,7 +14,7 @@
     "name": "Ali Ismael"
   },
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=8.9.0"
   },
   "license": "Apache-2.0",
   "bugs": {

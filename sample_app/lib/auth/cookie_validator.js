@@ -25,6 +25,6 @@
  *                as if request.cookieAuth.set() was called.
  *
  */
-module.exports = function(request, session, callback) {
-    callback(null, true);
+module.exports = async function(request, session) {
+    return {valid: true};
 };

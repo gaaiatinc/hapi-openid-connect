@@ -15,7 +15,6 @@ describe("temp tests", function() {
         // runs before all tests in this block
         //
         platform.init("./");
-        console.log(path.resolve("./"));
         app_config = platform.app_config;
         return;
     });

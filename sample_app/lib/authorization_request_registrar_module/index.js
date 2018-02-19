@@ -28,9 +28,7 @@
 
 "use strict";
 
-let Q = require("q");
-
-let db_mgr = require("valde-hapi").database;
+let dbMgr = require("../database");
 
 /**
  * This function must return a promise, which persists the authorization_request
@@ -41,27 +39,24 @@ let db_mgr = require("valde-hapi").database;
  * @return authorization_request_id
  */
 function post_authorization_request(authorization_request) {
-    return Q.Promise((resolve, reject) => {
-        db_mgr.updateOne(
-                "authorization_request", {
-                    client_id: {
-                        $eq: null
-                    }
-                }, {
-                    $set: authorization_request
-                }, {
-                    upsert: true
-                })
-            .then(
-                (result) => {
-                    if (result.upsertedCount === 1) {
-                        return resolve(result.upsertedId._id);
-                    } else {
-                        return reject(new Error("No authorization recoreds inserted"));
-                    }
-                }, (err) => {
-                    reject(err);
-                });
+    return new Promise((resolve, reject) => {
+        dbMgr
+            .updateOne("authorization_request", {
+                client_id: {
+                    $eq: null
+                }
+            }, {
+                $set: authorization_request
+            }, {upsert: true})
+            .then((result) => {
+                if (result.upsertedCount === 1) {
+                    return resolve(result.upsertedId._id);
+                } else {
+                    return reject(new Error("No authorization recoreds inserted"));
+                }
+            }, (err) => {
+                reject(err);
+            });
     });
 }
 
@@ -75,27 +70,24 @@ function put_authorization_request(authorization_request) {
     if (authorization_request.granted) {
         authorization_request.expire_on = new Date();
     }
-    return Q.Promise((resolve, reject) => {
-        db_mgr.updateOne(
-                "authorization_request", {
-                    _id: {
-                        $eq: authorization_request._id
-                    }
-                }, {
-                    $set: authorization_request
-                }, {
-                    upsert: true
-                })
-            .then(
-                (result) => {
-                    if (result.modifiedCount === 1) {
-                        return resolve(authorization_request._id);
-                    } else {
-                        return reject(new Error("No authorization recoreds inserted"));
-                    }
-                }, (err) => {
-                    reject(err);
-                });
+    return new Promise((resolve, reject) => {
+        dbMgr
+            .updateOne("authorization_request", {
+                _id: {
+                    $eq: authorization_request._id
+                }
+            }, {
+                $set: authorization_request
+            }, {upsert: true})
+            .then((result) => {
+                if (result.modifiedCount === 1) {
+                    return resolve(authorization_request._id);
+                } else {
+                    return reject(new Error("No authorization recoreds inserted"));
+                }
+            }, (err) => {
+                reject(err);
+            });
     });
 }
 
@@ -112,15 +104,13 @@ function put_authorization_request(authorization_request) {
  * @return {[object]}
  */
 function get_authorization_request(authorization_request_id) {
-    return Q.Promise((resolve, reject) => {
-        db_mgr.find(
-                "authorization_request", {
-                    _id: {
-                        $eq: authorization_request_id
-                    }
-                }, {
-                    limit: 1
-                })
+    return new Promise((resolve, reject) => {
+        dbMgr
+            .find("authorization_request", {
+                _id: {
+                    $eq: authorization_request_id
+                }
+            }, {limit: 1})
             .then((authorize_requests) => {
                 if (authorize_requests.length > 0) {
                     return resolve(authorize_requests[0]);
@@ -139,7 +129,7 @@ function get_authorization_request(authorization_request_id) {
  * @return {[type]}                        [description]
  */
 function delete_authorization_request(authorization_request_id) {
-    return db_mgr.deleteOne("authorization_request", {
+    return dbMgr.deleteOne("authorization_request", {
         _id: authorization_request_id
     }, {});
 }

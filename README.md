@@ -4,7 +4,7 @@ This module is a [Hapi](http://hapijs.com/) plugin implementation of the core an
 
 **_Please Note That This Plugin Is An Implementation Of The More Recent (Newer) Version Of OpenID: _OpenId Connect_, And It Does Not Support The Older OpenID 2.0_**. All OpenID 2.0-specific features, such as _realm_, are not supported. Furthermore, there is no plan for this plugin to support migration from the older OpenID 2.0 to the newer OpenID Connect.
 
-This release (1.2.1) is compliant with the OpenID Connect / OAuth 2.0 [documentation](http://openid.net/connect/), and offers the following endpoint implementation:
+**Release (>= 3.x.x) of this plugin is upgraded for hapi version >= 17,**. It is compliant with the OpenID Connect / OAuth 2.0 [documentation](http://openid.net/connect/), and offers the following endpoint implementation:
 
 1- _authorization endpoint_:
 
@@ -26,9 +26,9 @@ This release (1.2.1) is compliant with the OpenID Connect / OAuth 2.0 [documenta
 
 # Limitations of The Current Release
 
-- Client dynamic registration IS NOT IMPLEMENTED"
+- Client dynamic registration IS NOT INCLUDED", it is left to the plugin user to implement
 - Only authorization code flow request is implemented
-- The token endpoint DOES NOT IMPLEMENT the _Refresh Token Grant Type_
+- The token endpoint DOES NOT IMPLEMENT the *Refresh Token Grant Type*
 
 # Usage
 
@@ -166,7 +166,7 @@ Most of the attributes in the json configuration object are self-explanatory, an
 
     The returned/resolved user account id must be a string, and it must be less than 255 characters (as per the OpenID specs).
 
-  - _process_signin_request(request, reply)_:
+  - _process_signin_request(request, h)_:
 
     - verify that the username and password match a client account record
     - setup the session state to reflect signed in state if an account is found for the credentials in request.payload.username and request.payload.password
