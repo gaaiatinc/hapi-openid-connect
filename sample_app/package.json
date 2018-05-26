@@ -19,29 +19,29 @@
   },
   "homepage": "https://github.com/gaaiatinc",
   "dependencies": {
-    "hapi-openid-connect": "../",
+    "hapi-openid-connect": "3.3.1",
     "hapi-swagger": "^9.1.1",
-    "lodash": "^4.17.5",
-    "mobile-detect": "^1.3.3",
-    "mongodb": "^3.0.2",
-    "valde-hapi": "^17.2.1"
+    "lodash": "^4.17.10",
+    "mobile-detect": "^1.4.1",
+    "mongodb": "^3.0.8",
+    "valde-hapi": "^17.5.1"
   },
   "devDependencies": {
-    "eslint": "^4.18.0",
-    "eslint-config-standard": "^10.2.1",
-    "eslint-plugin-import": "^2.8.0",
+    "eslint": "^4.19.1",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.12.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-promise": "^3.6.0",
-    "eslint-plugin-react": "^7.6.1",
-    "eslint-plugin-standard": "^3.0.1",
+    "eslint-plugin-promise": "^3.8.0",
+    "eslint-plugin-react": "^7.8.2",
+    "eslint-plugin-standard": "^3.1.0",
     "grunt": "^1.0.2",
     "grunt-contrib-clean": "^1.1.0",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-jshint": "^1.1.0",
-    "grunt-contrib-nodeunit": "^1.0.0",
+    "grunt-contrib-nodeunit": "^2.0.0",
     "grunt-contrib-uglify": "^3.3.0",
-    "grunt-contrib-watch": "^1.0.0",
-    "mocha": "^5.0.1",
+    "grunt-contrib-watch": "^1.1.0",
+    "mocha": "^5.2.0",
     "react-bootstrap": "^0.32.1"
   }
 }
