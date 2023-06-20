@@ -1,11 +1,11 @@
 {
     "PORT": 8008,
-    "app_root": "/sample_app/oidc",
+    "app_root": "/nfoidc",
     "app_url_domain": "sampleapp.com",
     "external_server_url": "https://localhost.sampleapp.com:8443",
     "platform": {
         "plugins": {
-            "hapi_auth_cookie": {
+            "hapi_cookie": {
                 "session_cookie_password": "some strong session password  123456789012345678901234567890",
                 "cookie_name": "sats",
                 "on_auth_failure_redirect_to": "/sample_app/oidc/signin",
@@ -113,7 +113,7 @@
                     "schemes": [
                         "https"
                     ],
-                    "host": "localhost.sampleapp.com:8443",
+                    "host": "localhost",
                     "documentationPath": "/sample_app/oidc/api/swagger-ui",
                     "swaggerUIPath": "/sample_app/oidc/api/swaggerui/",
                     "jsonPath": "/sample_app/oidc/api/swagger.json",

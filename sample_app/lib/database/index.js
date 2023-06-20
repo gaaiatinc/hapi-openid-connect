@@ -15,23 +15,28 @@ const _set = require("lodash/set");
 let logger;
 
 const connect_config = {
-    promiseLibrary: Promise,
+
+    // promiseLibrary: Promise,
     w: 1,
-    wtimeout: 10000,
-    j: true,
+    wTimeoutMS: 10000,
+    journal: true,
     forceServerObjectId: true,
     serializeFunctions: false,
     raw: false,
-    bufferMaxEntries: 100,
-    poolSize: 10,
+    // bufferMaxEntries: 100,
+    // poolSize: 10,
+    maxPoolSize: 10,
+    minPoolSize: 10,
     socketTimeoutMS: 0,
     connectTimeoutMS: 0,
-    autoReconnect: true,
+    // autoReconnect: true,
     noDelay: true,
-    keepAlive: 50000,
-    //readPreference: "nearest",
-    reconnectTries: 1000,
-    reconnectInterval: 1000
+    // keepAlive: 50000,
+    useNewUrlParser: true,
+    readPreference: "nearest",
+    // reconnectTries: 1000,
+    // reconnectInterval: 1000,
+
 
     //replSet: {
     //    ha: false
@@ -144,21 +149,25 @@ const init = (app_config, aLogger) => {
             });
         }
 
+
         return new Promise((resolve) => {
             /**
              * Connection to the database
              */
             (function dbConnect() {
-                mongo_client.connect(dbURL, connect_config, (err, mongoClient) => {
-                    if (err) {
-                        logger.error(err);
-                        setTimeout(dbConnect, app_config.get("app:database:connect_retry_millies"));
-                    } else {
+
+                console.log("\dbConnect\n")
+
+                mongo_client.connect(dbURL, connect_config)
+                    .then((mongoClient) => {
                         dbInstance = mongoClient.db(dbName);
                         logger.info("Successfully connected to the database.");
                         return resolve();
-                    }
-                });
+                    })
+                    .catch((err) => {
+                        logger.error(err);
+                        setTimeout(dbConnect, app_config.get("app:database:connect_retry_millies"));
+                    });
             })();
         });
     }

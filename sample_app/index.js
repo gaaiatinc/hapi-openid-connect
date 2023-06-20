@@ -27,7 +27,7 @@ const pilot = async () => {
             ? "WARN"
             : "DEBUG");
 
-        logger.info("Server running at:", server.info.uri);
+        logger.info(`Server running at: ${server.info.uri}`);
     } catch (err) {
         console.log(err);
     }
